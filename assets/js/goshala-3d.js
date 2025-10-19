@@ -104,10 +104,37 @@ function initGoshala3D(){
   // Layout features inspired by the provided illustration
   buildMainHall();
   buildLongBarn();
-  buildUtilityHouse();
+  buildStaffHouse();
   buildPaths();
   scatterMangoTrees();
   placeCattle();
+
+  function createSignPlate(text, width = 8, height = 1.6){
+    const canvas = document.createElement('canvas');
+    canvas.width = 1024;
+    canvas.height = 256;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#0b2813';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    gradient.addColorStop(0, '#f6f8ee');
+    gradient.addColorStop(1, '#dbe9d0');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(16, 16, canvas.width - 32, canvas.height - 32);
+    ctx.fillStyle = '#0b2813';
+    ctx.font = 'bold 144px "Helvetica Neue", Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.anisotropy = 4;
+    const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+    const geometry = new THREE.PlaneGeometry(width, height);
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.renderOrder = 5;
+    return mesh;
+  }
 
   function buildMainHall(){
     const hall = new THREE.Group();
@@ -198,6 +225,10 @@ function initGoshala3D(){
 
     const roofGroup = createMainRoof();
     hall.add(roofGroup);
+
+    const signage = createSignPlate('Nitai Gauranga Temple', 14, 2.4);
+    signage.position.set(0, 5.6, windowConfig.inset + 0.1);
+    hall.add(signage);
 
     addTempleInterior(hall);
 
@@ -533,26 +564,82 @@ function initGoshala3D(){
     scene.add(shed);
   }
 
-  function buildUtilityHouse(){
-    const hut = new THREE.Group();
-    const base = new THREE.Mesh(new THREE.BoxGeometry(16, 0.6, 10), materials.highlight);
-    base.position.y = 0.3;
-    hut.add(base);
+  function buildStaffHouse(){
+    const staff = new THREE.Group();
+    const footprint = { x: 12, z: 9 };
+    const storyHeight = 4;
+    const levels = 3;
+    const plinth = new THREE.Mesh(new THREE.BoxGeometry(footprint.x + 4, 0.6, footprint.z + 4), materials.highlight);
+    plinth.position.y = 0.3;
+    staff.add(plinth);
 
-    const body = new THREE.Mesh(new THREE.BoxGeometry(14, 5.5, 8), materials.brick);
-    body.position.y = 3.1;
-    hut.add(body);
+    for(let level=0; level<levels; level++){
+      const storey = new THREE.Group();
+      const yBase = 0.6 + level * storyHeight;
+      const body = new THREE.Mesh(new THREE.BoxGeometry(footprint.x, storyHeight - 0.6, footprint.z), materials.brick);
+      body.position.y = yBase + (storyHeight - 0.6)/2;
+      storey.add(body);
 
-    const roof = new THREE.Mesh(new THREE.BoxGeometry(14.5, 1, 9), materials.clayRoof);
-    roof.position.y = 6.5;
-    roof.rotation.x = THREE.MathUtils.degToRad(-10);
-    roof.material = materials.clayRoof.clone();
-    roof.material.side = THREE.DoubleSide;
-    hut.add(roof);
+      if(level < levels - 1){
+        const slab = new THREE.Mesh(new THREE.BoxGeometry(footprint.x + 0.4, 0.3, footprint.z + 0.4), materials.plaster);
+        slab.position.y = yBase + storyHeight - 0.15;
+        storey.add(slab);
+      }
 
-    hut.position.set(-34, 0, 14);
-    hut.rotation.y = THREE.MathUtils.degToRad(-18);
-    scene.add(hut);
+      const balconyDepth = 2.2;
+      const balcony = new THREE.Mesh(new THREE.BoxGeometry(footprint.x - 2.5, 0.28, balconyDepth), materials.highlight);
+      balcony.position.set(0, yBase + 1.6, footprint.z/2 + balconyDepth/2 - 0.4);
+      storey.add(balcony);
+
+      const railing = new THREE.Mesh(new THREE.BoxGeometry(footprint.x - 2.8, 1.1, 0.2), new THREE.MeshLambertMaterial({ color: 0xe5e7eb }));
+      railing.position.set(0, balcony.position.y + 0.7, footprint.z/2 + balconyDepth - 0.6);
+      storey.add(railing);
+
+      const postGeo = new THREE.BoxGeometry(0.3, balcony.position.y + 0.3, 0.3);
+      [-footprint.x/2 + 1.1, footprint.x/2 - 1.1].forEach((x)=>{
+        const post = new THREE.Mesh(postGeo, materials.highlight);
+        post.position.set(x, (postGeo.parameters.height)/2 + 0.6, footprint.z/2 + balconyDepth - 0.6);
+        storey.add(post);
+      });
+
+      storey.position.y = level * 0.05;
+      staff.add(storey);
+    }
+
+    const roof = new THREE.Group();
+    const roofHeight = 0.6 + levels * storyHeight + 0.2;
+    const roofSpanX = footprint.x + 2.4;
+    const roofSpanZ = footprint.z + 2.4;
+    const apexHeight = 3.4;
+    const roofGeo = new THREE.PlaneGeometry(roofSpanX, roofSpanZ, 18, 18);
+    const pos = roofGeo.attributes.position;
+    const halfX = roofSpanX / 2;
+    const halfZ = roofSpanZ / 2;
+    for(let i=0;i<pos.count;i++){
+      const x = pos.getX(i);
+      const z = pos.getY(i);
+      const nx = Math.abs(x) / halfX;
+      const nz = Math.abs(z) / halfZ;
+      const y = roofHeight + apexHeight * (1 - Math.max(nx, nz));
+      pos.setX(i, x);
+      pos.setY(i, y);
+      pos.setZ(i, z);
+    }
+    pos.needsUpdate = true;
+    roofGeo.computeVertexNormals();
+    const roofMat = materials.clayRoof.clone();
+    roofMat.side = THREE.DoubleSide;
+    roofMat.flatShading = true;
+    roofMat.polygonOffset = true;
+    roofMat.polygonOffsetFactor = -0.6;
+    roofMat.polygonOffsetUnits = -3;
+    const roofMesh = new THREE.Mesh(roofGeo, roofMat);
+    roof.add(roofMesh);
+    staff.add(roof);
+
+    staff.position.set(-16, 0, -26);
+    staff.rotation.y = THREE.MathUtils.degToRad(18);
+    scene.add(staff);
   }
 
   function buildPaths(){
@@ -576,15 +663,16 @@ function initGoshala3D(){
     barnCourt.position.set(38, 0.01, -4);
     scene.add(barnCourt);
 
-    const westConnector = new THREE.Mesh(new THREE.PlaneGeometry(22, 7), materials.path);
-    westConnector.rotation.x = -Math.PI/2;
-    westConnector.position.set(-20, 0.01, 8);
-    scene.add(westConnector);
+    const staffConnector = new THREE.Mesh(new THREE.PlaneGeometry(18, 6), materials.path);
+    staffConnector.rotation.x = -Math.PI/2;
+    staffConnector.position.set(-10, 0.01, -12);
+    staffConnector.rotation.z = THREE.MathUtils.degToRad(10);
+    scene.add(staffConnector);
 
-    const utilityCourt = new THREE.Mesh(new THREE.PlaneGeometry(18, 16), materials.path);
-    utilityCourt.rotation.x = -Math.PI/2;
-    utilityCourt.position.set(-34, 0.01, 14);
-    scene.add(utilityCourt);
+    const staffCourt = new THREE.Mesh(new THREE.PlaneGeometry(14, 18), materials.path);
+    staffCourt.rotation.x = -Math.PI/2;
+    staffCourt.position.set(-16, 0.01, -26);
+    scene.add(staffCourt);
 
     const innerLawn = new THREE.Mesh(new THREE.CircleGeometry(26, 48), materials.grassPatch);
     innerLawn.rotation.x = -Math.PI/2;
@@ -605,7 +693,7 @@ function initGoshala3D(){
       if(Math.abs(x) < 24 && Math.abs(z) < 18) return false; // main hall buffer
       if(Math.abs(x) < 14 && z > 12) return false; // avoid entry axis
       if(Math.abs(x-38) < 30 && Math.abs(z+4) < 14) return false; // cowshed courtyard
-      if(Math.abs(x+34) < 12 && Math.abs(z-14) < 10) return false; // utility house buffer
+      if(Math.abs(x+16) < 12 && Math.abs(z+26) < 12) return false; // staff house buffer
       if(!canPlace(x, z, 7)) return false;
       const tree = createMangoTree(scale);
       tree.position.set(x, 0, z);
