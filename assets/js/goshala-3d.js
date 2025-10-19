@@ -114,26 +114,36 @@ function initGoshala3D(){
     canvas.width = 1024;
     canvas.height = 256;
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#0b2813';
+    ctx.fillStyle = '#f7fceb';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, '#f6f8ee');
-    gradient.addColorStop(1, '#dbe9d0');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(16, 16, canvas.width - 32, canvas.height - 32);
-    ctx.fillStyle = '#0b2813';
-    ctx.font = 'bold 144px "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = '#10381d';
+    ctx.font = 'bold 148px "Helvetica Neue", Arial, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(text, canvas.width / 2, canvas.height / 2);
 
     const texture = new THREE.CanvasTexture(canvas);
     texture.anisotropy = 4;
-    const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
-    const geometry = new THREE.PlaneGeometry(width, height);
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.renderOrder = 5;
-    return mesh;
+    const group = new THREE.Group();
+
+    const boardDepth = 0.12;
+    const board = new THREE.Mesh(
+      new THREE.BoxGeometry(width + 0.6, height + 0.6, boardDepth),
+      new THREE.MeshLambertMaterial({ color: 0x132f1b })
+    );
+    group.add(board);
+
+    const faceMaterial = new THREE.MeshBasicMaterial({ map: texture, transparent: true, side: THREE.DoubleSide });
+    const face = new THREE.Mesh(new THREE.PlaneGeometry(width, height), faceMaterial);
+    face.position.z = boardDepth/2 + 0.001;
+    group.add(face);
+
+    const backFace = face.clone();
+    backFace.position.z = -boardDepth/2 - 0.001;
+    group.add(backFace);
+
+    group.renderOrder = 5;
+    return group;
   }
 
   function buildMainHall(){
@@ -227,9 +237,11 @@ function initGoshala3D(){
     hall.add(roofGroup);
 
     const signage = createSignPlate('Nitai Gauranga Temple', 12, 2.2);
-    signage.position.set(0, 6.4, windowConfig.inset + 0.32);
-    signage.rotation.set(-THREE.MathUtils.degToRad(88), 0, 0);
-    signage.castShadow = false;
+    const roofSlope = THREE.MathUtils.degToRad(24);
+    const offsetZ = 2.2;
+    const baseEaveY = 8.6;
+    signage.position.set(0, baseEaveY + Math.tan(roofSlope) * offsetZ + 0.05, windowConfig.inset + offsetZ);
+    signage.rotation.x = -roofSlope;
     hall.add(signage);
 
     addTempleInterior(hall);
