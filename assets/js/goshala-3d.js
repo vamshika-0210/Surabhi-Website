@@ -82,7 +82,7 @@ function initGoshala3D(){
   const materials = {
     brick: new THREE.MeshLambertMaterial({ color: 0xb7563f }),
     plaster: new THREE.MeshLambertMaterial({ color: 0xe8ddc3 }),
-    clayRoof: new THREE.MeshLambertMaterial({ color: 0xb23b2a, side: THREE.DoubleSide }),
+    clayRoof: new THREE.MeshLambertMaterial({ color: 0xb23b2a }),
     highlight: new THREE.MeshLambertMaterial({ color: 0xf3e7ba }),
     wood: new THREE.MeshLambertMaterial({ color: 0x9c6b3b }),
     metalRoof: new THREE.MeshLambertMaterial({ color: 0x9aa3b2 }),
@@ -176,6 +176,8 @@ function initGoshala3D(){
     const canopy = new THREE.Mesh(new THREE.BoxGeometry(16, 0.5, 8.4), materials.clayRoof);
     canopy.position.set(0, 6.8, 13.4);
     canopy.rotation.x = THREE.MathUtils.degToRad(-12);
+    canopy.material = materials.clayRoof.clone();
+    canopy.material.side = THREE.DoubleSide;
     porch.add(canopy);
 
     const postGeo = new THREE.CylinderGeometry(0.45, 0.45, 5.6, 16);
@@ -267,38 +269,99 @@ function initGoshala3D(){
 
   function createMainRoof(){
     const roof = new THREE.Group();
+    const hallWidth = 40;
+    const hallDepth = 20;
+    const overhangX = 2.8;
+    const overhangZ = 2.4;
+    const eaveHeight = 8.6;
     const slopeAngle = THREE.MathUtils.degToRad(24);
-    const roofWidth = 44.8;
-    const halfSpan = 12.6;
-    const roofHeight = 10.6;
+    const halfWidth = hallWidth / 2 + overhangX;
+    const halfDepth = hallDepth / 2 + overhangZ;
+    const ridgeHeight = eaveHeight + Math.tan(slopeAngle) * halfDepth;
 
-    function roofHalf(sign){
-      const g = new THREE.Group();
-      g.position.set(0, roofHeight, 0);
-      g.rotation.x = sign * slopeAngle;
+    const roofPositions = new Float32Array([
+      -halfWidth, eaveHeight, halfDepth,
+      -halfWidth, eaveHeight, -halfDepth,
+      0, ridgeHeight, halfDepth,
 
-      const panel = new THREE.Mesh(new THREE.PlaneGeometry(roofWidth, halfSpan*2 + 0.4, 4, 2), materials.clayRoof);
-      panel.position.set(0, 0, sign * halfSpan);
-      g.add(panel);
+      -halfWidth, eaveHeight, -halfDepth,
+      0, ridgeHeight, -halfDepth,
+      0, ridgeHeight, halfDepth,
 
-      const fascia = new THREE.Mesh(new THREE.BoxGeometry(roofWidth, 0.45, 0.7), materials.clayRoof);
-      fascia.position.set(0, -Math.sin(slopeAngle)*halfSpan + 0.25, sign * (halfSpan + 0.35));
-      fascia.rotation.x = -sign * slopeAngle;
-      g.add(fascia);
+      halfWidth, eaveHeight, halfDepth,
+      0, ridgeHeight, halfDepth,
+      halfWidth, eaveHeight, -halfDepth,
 
-      return g;
+      halfWidth, eaveHeight, -halfDepth,
+      0, ridgeHeight, halfDepth,
+      0, ridgeHeight, -halfDepth
+    ]);
+    const roofGeometry = new THREE.BufferGeometry();
+    roofGeometry.setAttribute('position', new THREE.Float32BufferAttribute(roofPositions, 3));
+    roofGeometry.computeVertexNormals();
+
+    const roofMaterial = materials.clayRoof.clone();
+    roofMaterial.side = THREE.DoubleSide;
+    roofMaterial.flatShading = true;
+    roofMaterial.polygonOffset = true;
+    roofMaterial.polygonOffsetFactor = -0.8;
+    roofMaterial.polygonOffsetUnits = -4;
+
+    const roofSurface = new THREE.Mesh(roofGeometry, roofMaterial);
+    roofSurface.frustumCulled = false;
+    roof.add(roofSurface);
+
+    const fasciaMaterial = materials.highlight.clone();
+    fasciaMaterial.side = THREE.DoubleSide;
+
+    function createGable(z){
+      const gableGeo = new THREE.BufferGeometry();
+      gableGeo.setAttribute('position', new THREE.Float32BufferAttribute([
+        -halfWidth, eaveHeight, z,
+        halfWidth, eaveHeight, z,
+        0, ridgeHeight, z
+      ], 3));
+      gableGeo.computeVertexNormals();
+      return new THREE.Mesh(gableGeo, fasciaMaterial);
     }
+    roof.add(createGable(halfDepth));
+    roof.add(createGable(-halfDepth));
 
-    roof.add(roofHalf(1));
-    roof.add(roofHalf(-1));
+    function createEaveBoard(z){
+      const board = new THREE.Mesh(
+        new THREE.BoxGeometry(hallWidth + overhangX * 2, 0.35, 0.55),
+        fasciaMaterial
+      );
+      board.position.set(0, eaveHeight - 0.1, z);
+      return board;
+    }
+    roof.add(createEaveBoard(halfDepth - 0.1));
+    roof.add(createEaveBoard(-halfDepth + 0.1));
 
-    const ridge = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.55, roofWidth + 1.2, 26), materials.clayRoof);
-    ridge.rotation.z = Math.PI/2;
-    ridge.position.set(0, roofHeight + 0.25, 0);
-    roof.add(ridge);
+    function createSideEave(sign){
+      const board = new THREE.Mesh(
+        new THREE.BoxGeometry(0.55, 0.35, hallDepth + overhangZ * 2),
+        fasciaMaterial
+      );
+      board.position.set(sign * (halfWidth - 0.1), eaveHeight - 0.1, 0);
+      return board;
+    }
+    roof.add(createSideEave(1));
+    roof.add(createSideEave(-1));
 
-    const ridgeCap = new THREE.Mesh(new THREE.BoxGeometry(roofWidth + 0.8, 0.28, 0.9), materials.highlight);
-    ridgeCap.position.set(0, roofHeight + 0.42, 0);
+    const ridgePipe = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.32, 0.32, hallWidth + overhangX * 2, 24),
+      materials.highlight
+    );
+    ridgePipe.rotation.z = Math.PI / 2;
+    ridgePipe.position.set(0, ridgeHeight + 0.22, 0);
+    roof.add(ridgePipe);
+
+    const ridgeCap = new THREE.Mesh(
+      new THREE.BoxGeometry(hallWidth + overhangX * 2 + 0.7, 0.22, 0.55),
+      materials.highlight
+    );
+    ridgeCap.position.set(0, ridgeHeight + 0.35, 0);
     roof.add(ridgeCap);
 
     return roof;
@@ -430,6 +493,8 @@ function initGoshala3D(){
     const roof = new THREE.Mesh(new THREE.BoxGeometry(14.5, 1, 9), materials.clayRoof);
     roof.position.y = 6.5;
     roof.rotation.x = THREE.MathUtils.degToRad(-10);
+    roof.material = materials.clayRoof.clone();
+    roof.material.side = THREE.DoubleSide;
     hut.add(roof);
 
     hut.position.set(-34, 0, 14);
