@@ -88,12 +88,10 @@ function initGoshala3D(){
     metalRoof: new THREE.MeshLambertMaterial({ color: 0x9aa3b2 }),
     path: new THREE.MeshLambertMaterial({ color: 0xcfa770, side: THREE.DoubleSide }),
     grassPatch: new THREE.MeshLambertMaterial({ color: 0x8ccf79, side: THREE.DoubleSide }),
-    palmLeaf: new THREE.MeshLambertMaterial({ color: 0x3a9f5a, side: THREE.DoubleSide }),
     mangoLeaf: new THREE.MeshLambertMaterial({ color: 0x255d2b }),
     mangoLeafSun: new THREE.MeshLambertMaterial({ color: 0x3f8f3a }),
     mangoFruit: new THREE.MeshLambertMaterial({ color: 0xf2a541 }),
     treeBark: new THREE.MeshLambertMaterial({ color: 0x6d4c41 }),
-    palmBark: new THREE.MeshLambertMaterial({ color: 0x8b5a2b }),
     frame: new THREE.MeshLambertMaterial({ color: 0xf8f3d7 }),
     shade: new THREE.MeshLambertMaterial({ color: 0x2d2a24 }),
     idolCloth: new THREE.MeshLambertMaterial({ color: 0xe35353 }),
@@ -108,7 +106,6 @@ function initGoshala3D(){
   buildLongBarn();
   buildUtilityHouse();
   buildPaths();
-  placePalmTrees();
   scatterMangoTrees();
   placeCattle();
 
@@ -421,59 +418,119 @@ function initGoshala3D(){
   }
 
   function buildLongBarn(){
-    const barn = new THREE.Group();
+    const shed = new THREE.Group();
+    const length = 44;
+    const width = 12;
+    const overhang = 1.6;
+    const wallHeight = 3.8;
+    const eaveHeight = wallHeight + 0.6;
+    const roofRise = 3.2;
 
-    const floor = new THREE.Mesh(new THREE.BoxGeometry(46, 0.6, 14), materials.highlight);
-    floor.position.y = 0.3;
-    barn.add(floor);
+    const base = new THREE.Mesh(new THREE.BoxGeometry(length + 2.6, 0.6, width + 3), materials.highlight);
+    base.position.y = 0.3;
+    shed.add(base);
 
-    const wall = new THREE.Mesh(new THREE.BoxGeometry(44, 5.2, 11), materials.brick);
-    wall.position.y = 2.9;
-    barn.add(wall);
+    const floorMat = new THREE.MeshLambertMaterial({ color: 0xd8c9a3 });
+    const floor = new THREE.Mesh(new THREE.BoxGeometry(length + 1.8, 0.2, width + 1.4), floorMat);
+    floor.position.y = 0.11;
+    shed.add(floor);
 
-    const trim = new THREE.Mesh(new THREE.BoxGeometry(44.2, 0.4, 11.2), materials.highlight);
-    trim.position.y = 5.3;
-    barn.add(trim);
+    const parapetHeight = 1.9;
+    const sideWallGeo = new THREE.BoxGeometry(length, parapetHeight, 0.5);
+    const eastWall = new THREE.Mesh(sideWallGeo, materials.brick);
+    eastWall.position.set(0, parapetHeight / 2 + 0.6, width / 2);
+    shed.add(eastWall);
+    const westWall = eastWall.clone();
+    westWall.position.z = -width / 2;
+    shed.add(westWall);
 
-    // Windows as horizontal slits
-    const slatGeo = new THREE.BoxGeometry(40, 1.4, 0.3);
-    const slat = new THREE.Mesh(slatGeo, new THREE.MeshLambertMaterial({ color: 0xcfd8dc }));
-    slat.position.set(0, 3.7, 5.3);
-    barn.add(slat);
-    const slatBack = slat.clone();
-    slatBack.position.z = -5.3;
-    barn.add(slatBack);
+    const endWallHeight = 1.8;
+    const endWallGeo = new THREE.BoxGeometry(0.5, endWallHeight, width);
+    const frontWall = new THREE.Mesh(endWallGeo, materials.brick);
+    frontWall.position.set(-length / 2, endWallHeight / 2 + 0.6, 0);
+    shed.add(frontWall);
+    const backWall = frontWall.clone();
+    backWall.position.x = length / 2;
+    shed.add(backWall);
 
-    // Curved roof (half-cylinder)
-    const roofGeo = new THREE.CylinderGeometry(6.8, 6.8, 44.5, 28, 1, true, 0, Math.PI);
-    const roofMaterial = materials.metalRoof.clone();
-    roofMaterial.side = THREE.FrontSide;
-    roofMaterial.polygonOffset = true;
-    roofMaterial.polygonOffsetFactor = -0.7;
-    roofMaterial.polygonOffsetUnits = -4;
-    const roof = new THREE.Mesh(roofGeo, roofMaterial);
-    roof.rotation.z = Math.PI/2;
-    roof.position.y = 7.2;
-    barn.add(roof);
+    const postGeo = new THREE.BoxGeometry(0.45, wallHeight + 0.4, 0.45);
+    const postSpacing = length / 6;
+    for(let i=0;i<=6;i++){
+      const x = -length/2 + i * postSpacing;
+      const southPost = new THREE.Mesh(postGeo, materials.highlight);
+      southPost.position.set(x, (wallHeight + 0.4)/2 + 0.6, width/2 - 0.35);
+      shed.add(southPost);
+      const northPost = southPost.clone();
+      northPost.position.z = -width/2 + 0.35;
+      shed.add(northPost);
+    }
 
-    const endCapGeo = new THREE.CircleGeometry(6.8, 20, 0, Math.PI);
-    const capMaterial = materials.metalRoof.clone();
-    capMaterial.side = THREE.FrontSide;
-    capMaterial.polygonOffset = true;
-    capMaterial.polygonOffsetFactor = -0.6;
-    capMaterial.polygonOffsetUnits = -4;
-    const capFront = new THREE.Mesh(endCapGeo, capMaterial);
-    capFront.rotation.x = Math.PI/2;
-    capFront.position.set(0, 7.2, 7);
-    barn.add(capFront);
-    const capBack = new THREE.Mesh(endCapGeo.clone(), capMaterial.clone());
-    capBack.rotation.x = Math.PI/2;
-    capBack.position.set(0, 7.2, -7);
-    barn.add(capBack);
+    const beam = new THREE.Mesh(new THREE.BoxGeometry(length + 0.8, 0.35, 0.5), materials.highlight);
+    beam.position.set(0, eaveHeight, width/2 + 0.1);
+    shed.add(beam);
+    const beamBack = beam.clone();
+    beamBack.position.z = -width/2 - 0.1;
+    shed.add(beamBack);
 
-    barn.position.set(38, 0, -4);
-    barn.rotation.y = Math.PI / 2;
-    scene.add(barn);
+    const feedTroughGeo = new THREE.BoxGeometry(length - 4, 0.6, 0.6);
+    const feedTrough = new THREE.Mesh(feedTroughGeo, new THREE.MeshLambertMaterial({ color: 0xbca57a }));
+    feedTrough.position.set(0, 0.9, width/2 - 0.9);
+    shed.add(feedTrough);
+
+    const bedding = new THREE.Mesh(new THREE.BoxGeometry(length - 6, 0.12, width - 4.5), new THREE.MeshLambertMaterial({ color: 0xf3e7c3 }));
+    bedding.position.set(0, 0.22, -0.6);
+    shed.add(bedding);
+
+    const roofSegments = 32;
+    const span = width + overhang * 2;
+    const roofGeo = new THREE.PlaneGeometry(length + overhang * 2, span, roofSegments, 8);
+    const pos = roofGeo.attributes.position;
+    const halfSpan = span / 2;
+    for(let i=0;i<pos.count;i++){
+      const x = pos.getX(i);
+      const z = pos.getY(i);
+      const ratio = Math.min(1, Math.abs(z) / halfSpan);
+      const y = eaveHeight + roofRise * (1 - Math.pow(ratio, 1.4));
+      pos.setX(i, x);
+      pos.setY(i, y);
+      pos.setZ(i, z);
+    }
+    pos.needsUpdate = true;
+    roofGeo.computeVertexNormals();
+    const roofMat = materials.metalRoof.clone();
+    roofMat.side = THREE.DoubleSide;
+    roofMat.flatShading = true;
+    roofMat.polygonOffset = true;
+    roofMat.polygonOffsetFactor = -0.8;
+    roofMat.polygonOffsetUnits = -4;
+    const roof = new THREE.Mesh(roofGeo, roofMat);
+    shed.add(roof);
+
+    const stallCowPalettes = [
+      { primary: 0xb8744f, secondary: 0xffffff },
+      { primary: 0x8c4c36, secondary: 0xf2e2d0 },
+      { primary: 0x9f5b3d, secondary: 0xf4ede2 }
+    ];
+    const cowCount = 5;
+    const laneOffset = width/2 - 2;
+    for(let i=0;i<cowCount;i++){
+      const cow = createGirCow({
+        scale: 0.55,
+        grazing: false,
+        palette: stallCowPalettes[i % stallCowPalettes.length]
+      });
+      cow.position.set(-length/2 + 6 + i * (length - 12)/(cowCount - 1), 0, laneOffset);
+      cow.rotation.y = Math.PI;
+      shed.add(cow);
+    }
+
+    const exitRamp = new THREE.Mesh(new THREE.BoxGeometry(4.5, 0.35, 8), materials.highlight);
+    exitRamp.position.set(length/2 + 0.9, 0.18, 0);
+    shed.add(exitRamp);
+
+    shed.position.set(38, 0, -4);
+    shed.rotation.y = Math.PI / 2;
+    scene.add(shed);
   }
 
   function buildUtilityHouse(){
@@ -535,33 +592,6 @@ function initGoshala3D(){
     scene.add(innerLawn);
   }
 
-  function placePalmTrees(){
-    const palmPositions = [
-      [14, 0, 6],
-      [-14, 0, 6]
-    ];
-    palmPositions.forEach(([x, _, z])=>{
-      const palm = new THREE.Group();
-      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.75, 12, 12), materials.palmBark);
-      trunk.position.y = 6;
-      palm.add(trunk);
-
-      for(let i=0;i<6;i++){
-        const leaf = new THREE.Mesh(new THREE.PlaneGeometry(8, 2), materials.palmLeaf);
-        leaf.position.y = 12;
-        leaf.rotation.order = 'YXZ';
-        leaf.rotation.y = (Math.PI*2/6)*i;
-        leaf.rotation.x = THREE.MathUtils.degToRad(-55);
-        leaf.rotation.z = THREE.MathUtils.degToRad(10);
-        leaf.castShadow = false;
-        palm.add(leaf);
-      }
-
-      palm.position.set(x, 0, z);
-      scene.add(palm);
-    });
-  }
-
   function scatterMangoTrees(){
     const random = (a,b)=> a + Math.random()*(b-a);
     const placed = [];
@@ -572,9 +602,10 @@ function initGoshala3D(){
 
     function addTree(x, z, scale=1){
       if(Math.hypot(x, z) < 22) return false; // keep plaza open
-      if(Math.abs(x) < 14 && z > 12) return false; // avoid main front lawn
-      if(Math.abs(x) < 24 && z > 6) return false; // keep entry sightlines clear
-      if(Math.abs(x-38) < 16 && Math.abs(z+2) < 22) return false; // keep barn courtyard clear
+      if(Math.abs(x) < 24 && Math.abs(z) < 18) return false; // main hall buffer
+      if(Math.abs(x) < 14 && z > 12) return false; // avoid entry axis
+      if(Math.abs(x-38) < 30 && Math.abs(z+4) < 14) return false; // cowshed courtyard
+      if(Math.abs(x+34) < 12 && Math.abs(z-14) < 10) return false; // utility house buffer
       if(!canPlace(x, z, 7)) return false;
       const tree = createMangoTree(scale);
       tree.position.set(x, 0, z);
