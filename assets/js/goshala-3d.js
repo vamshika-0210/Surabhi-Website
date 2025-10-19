@@ -640,7 +640,7 @@ function initGoshala3D(){
     roof.add(roofMesh);
     staff.add(roof);
 
-    staff.position.set(-24, 0, -8);
+    staff.position.set(-34, 0, -10);
     staff.rotation.y = THREE.MathUtils.degToRad(12);
     scene.add(staff);
   }
@@ -667,15 +667,15 @@ function initGoshala3D(){
     barnCourt.position.set(48, 0.01, -6);
     scene.add(barnCourt);
 
-    const staffConnector = new THREE.Mesh(new THREE.PlaneGeometry(20, 6), materials.path);
+    const staffConnector = new THREE.Mesh(new THREE.PlaneGeometry(24, 6), materials.path);
     staffConnector.rotation.x = -Math.PI/2;
-    staffConnector.position.set(-12, 0.01, -6);
-    staffConnector.rotation.z = THREE.MathUtils.degToRad(22);
+    staffConnector.position.set(-18, 0.01, -8);
+    staffConnector.rotation.z = THREE.MathUtils.degToRad(18);
     scene.add(staffConnector);
 
-    const staffCourt = new THREE.Mesh(new THREE.PlaneGeometry(16, 20), materials.path);
+    const staffCourt = new THREE.Mesh(new THREE.PlaneGeometry(18, 22), materials.path);
     staffCourt.rotation.x = -Math.PI/2;
-    staffCourt.position.set(-24, 0.01, -8);
+    staffCourt.position.set(-34, 0.01, -10);
     scene.add(staffCourt);
 
     const innerLawn = new THREE.Mesh(new THREE.CircleGeometry(26, 48), materials.grassPatch);
