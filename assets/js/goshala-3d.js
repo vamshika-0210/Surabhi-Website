@@ -349,21 +349,6 @@ function initGoshala3D(){
     roof.add(createSideEave(1));
     roof.add(createSideEave(-1));
 
-    const ridgePipe = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.32, 0.32, hallWidth + overhangX * 2, 24),
-      materials.highlight
-    );
-    ridgePipe.rotation.z = Math.PI / 2;
-    ridgePipe.position.set(0, ridgeHeight + 0.22, 0);
-    roof.add(ridgePipe);
-
-    const ridgeCap = new THREE.Mesh(
-      new THREE.BoxGeometry(hallWidth + overhangX * 2 + 0.7, 0.22, 0.55),
-      materials.highlight
-    );
-    ridgeCap.position.set(0, ridgeHeight + 0.35, 0);
-    roof.add(ridgeCap);
-
     return roof;
   }
 
@@ -460,19 +445,30 @@ function initGoshala3D(){
     barn.add(slatBack);
 
     // Curved roof (half-cylinder)
-    const roofGeo = new THREE.CylinderGeometry(6.8, 6.8, 44.5, 40, 1, true, 0, Math.PI);
-    const roof = new THREE.Mesh(roofGeo, materials.metalRoof);
+    const roofGeo = new THREE.CylinderGeometry(6.8, 6.8, 44.5, 28, 1, true, 0, Math.PI);
+    const roofMaterial = materials.metalRoof.clone();
+    roofMaterial.side = THREE.FrontSide;
+    roofMaterial.polygonOffset = true;
+    roofMaterial.polygonOffsetFactor = -0.7;
+    roofMaterial.polygonOffsetUnits = -4;
+    const roof = new THREE.Mesh(roofGeo, roofMaterial);
     roof.rotation.z = Math.PI/2;
     roof.position.y = 7.2;
     barn.add(roof);
 
-    const endCapGeo = new THREE.CircleGeometry(6.8, 24, 0, Math.PI);
-    const capFront = new THREE.Mesh(endCapGeo, materials.metalRoof);
+    const endCapGeo = new THREE.CircleGeometry(6.8, 20, 0, Math.PI);
+    const capMaterial = materials.metalRoof.clone();
+    capMaterial.side = THREE.FrontSide;
+    capMaterial.polygonOffset = true;
+    capMaterial.polygonOffsetFactor = -0.6;
+    capMaterial.polygonOffsetUnits = -4;
+    const capFront = new THREE.Mesh(endCapGeo, capMaterial);
     capFront.rotation.x = Math.PI/2;
     capFront.position.set(0, 7.2, 7);
     barn.add(capFront);
-    const capBack = capFront.clone();
-    capBack.position.z = -7;
+    const capBack = new THREE.Mesh(endCapGeo.clone(), capMaterial.clone());
+    capBack.rotation.x = Math.PI/2;
+    capBack.position.set(0, 7.2, -7);
     barn.add(capBack);
 
     barn.position.set(38, 0, -4);
