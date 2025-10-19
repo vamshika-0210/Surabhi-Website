@@ -196,7 +196,6 @@ function initGoshala3D(){
     hall.add(doorway);
 
     hillockLandscape(hall);
-    addSideAwnings(hall);
 
     const roofGroup = createMainRoof();
     hall.add(roofGroup);
@@ -278,7 +277,7 @@ function initGoshala3D(){
       g.position.set(0, roofHeight, 0);
       g.rotation.x = sign * slopeAngle;
 
-      const panel = new THREE.Mesh(new THREE.PlaneGeometry(roofWidth, halfSpan*2 + 0.4, 28, 14), materials.clayRoof);
+      const panel = new THREE.Mesh(new THREE.PlaneGeometry(roofWidth, halfSpan*2 + 0.4, 4, 2), materials.clayRoof);
       panel.position.set(0, 0, sign * halfSpan);
       g.add(panel);
 
@@ -303,38 +302,6 @@ function initGoshala3D(){
     roof.add(ridgeCap);
 
     return roof;
-  }
-
-  function addSideAwnings(hall){
-    const leanAngle = THREE.MathUtils.degToRad(20);
-    const leanWidth = 44;
-    const leanDepth = 6.2;
-    const leanHeight = 7.4;
-    const offsetZ = 12.8;
-
-    const frontLean = new THREE.Mesh(new THREE.PlaneGeometry(leanWidth, leanDepth, 24, 2), materials.clayRoof);
-    frontLean.position.set(0, leanHeight, offsetZ);
-    frontLean.rotation.x = -leanAngle;
-    hall.add(frontLean);
-
-    const rearLean = new THREE.Mesh(new THREE.PlaneGeometry(leanWidth, leanDepth, 24, 2), materials.clayRoof);
-    rearLean.position.set(0, leanHeight, -offsetZ);
-    rearLean.rotation.x = leanAngle;
-    hall.add(rearLean);
-
-    const postGeo = new THREE.CylinderGeometry(0.28, 0.32, leanHeight-1.4, 12);
-    const postY = (leanHeight-1.4)/2;
-    const postZFront = offsetZ + 2.4;
-    const postZRear = -offsetZ - 2.4;
-    [-18, -6, 6, 18].forEach((x)=>{
-      const frontPost = new THREE.Mesh(postGeo, materials.highlight);
-      frontPost.position.set(x, postY, postZFront);
-      hall.add(frontPost);
-
-      const rearPost = new THREE.Mesh(postGeo, materials.highlight);
-      rearPost.position.set(x, postY, postZRear);
-      hall.add(rearPost);
-    });
   }
 
   function addTempleInterior(hall){
