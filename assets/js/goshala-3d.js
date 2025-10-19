@@ -236,12 +236,8 @@ function initGoshala3D(){
     const roofGroup = createMainRoof();
     hall.add(roofGroup);
 
-    const signage = createSignPlate('Nitai Gauranga Temple', 12, 2.2);
-    const roofSlope = THREE.MathUtils.degToRad(24);
-    const offsetZ = 2.2;
-    const baseEaveY = 8.6;
-    signage.position.set(0, baseEaveY + Math.tan(roofSlope) * offsetZ + 0.05, windowConfig.inset + offsetZ);
-    signage.rotation.x = -roofSlope;
+    const signage = createSignPlate('Nitai Gauranga Temple', 6, 1.2);
+    signage.position.set(0, 5.3, windowConfig.inset + 0.25);
     hall.add(signage);
 
     addTempleInterior(hall);
