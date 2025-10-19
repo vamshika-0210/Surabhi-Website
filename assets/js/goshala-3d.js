@@ -226,8 +226,9 @@ function initGoshala3D(){
     const roofGroup = createMainRoof();
     hall.add(roofGroup);
 
-    const signage = createSignPlate('Nitai Gauranga Temple', 14, 2.4);
-    signage.position.set(0, 5.6, windowConfig.inset + 0.1);
+    const signage = createSignPlate('Nitai Gauranga Temple', 12, 2.2);
+    signage.position.set(0, 9.2, windowConfig.inset + 0.55);
+    signage.rotation.x = -THREE.MathUtils.degToRad(24);
     hall.add(signage);
 
     addTempleInterior(hall);
@@ -559,16 +560,17 @@ function initGoshala3D(){
     exitRamp.position.set(length/2 + 0.9, 0.18, 0);
     shed.add(exitRamp);
 
-    shed.position.set(38, 0, -4);
+    shed.position.set(48, 0, -6);
     shed.rotation.y = Math.PI / 2;
     scene.add(shed);
+    plantCowshedBufferTrees(shed.position.x, shed.position.z);
   }
 
   function buildStaffHouse(){
     const staff = new THREE.Group();
     const footprint = { x: 12, z: 9 };
-    const storyHeight = 4;
-    const levels = 3;
+    const storyHeight = 3.6;
+    const levels = 4;
     const plinth = new THREE.Mesh(new THREE.BoxGeometry(footprint.x + 4, 0.6, footprint.z + 4), materials.highlight);
     plinth.position.y = 0.3;
     staff.add(plinth);
@@ -588,7 +590,7 @@ function initGoshala3D(){
 
       const balconyDepth = 2.2;
       const balcony = new THREE.Mesh(new THREE.BoxGeometry(footprint.x - 2.5, 0.28, balconyDepth), materials.highlight);
-      balcony.position.set(0, yBase + 1.6, footprint.z/2 + balconyDepth/2 - 0.4);
+      balcony.position.set(0, yBase + 1.4, footprint.z/2 + balconyDepth/2 - 0.4);
       storey.add(balcony);
 
       const railing = new THREE.Mesh(new THREE.BoxGeometry(footprint.x - 2.8, 1.1, 0.2), new THREE.MeshLambertMaterial({ color: 0xe5e7eb }));
@@ -608,9 +610,9 @@ function initGoshala3D(){
 
     const roof = new THREE.Group();
     const roofHeight = 0.6 + levels * storyHeight + 0.2;
-    const roofSpanX = footprint.x + 2.4;
-    const roofSpanZ = footprint.z + 2.4;
-    const apexHeight = 3.4;
+    const roofSpanX = footprint.x + 2.6;
+    const roofSpanZ = footprint.z + 2.6;
+    const apexHeight = 3.8;
     const roofGeo = new THREE.PlaneGeometry(roofSpanX, roofSpanZ, 18, 18);
     const pos = roofGeo.attributes.position;
     const halfX = roofSpanX / 2;
@@ -637,8 +639,8 @@ function initGoshala3D(){
     roof.add(roofMesh);
     staff.add(roof);
 
-    staff.position.set(-16, 0, -26);
-    staff.rotation.y = THREE.MathUtils.degToRad(18);
+    staff.position.set(-24, 0, -8);
+    staff.rotation.y = THREE.MathUtils.degToRad(12);
     scene.add(staff);
   }
 
@@ -653,31 +655,45 @@ function initGoshala3D(){
     frontPath.position.set(0, 0.01, 20);
     scene.add(frontPath);
 
-    const eastConnector = new THREE.Mesh(new THREE.PlaneGeometry(20, 8), materials.path);
+    const eastConnector = new THREE.Mesh(new THREE.PlaneGeometry(26, 8), materials.path);
     eastConnector.rotation.x = -Math.PI/2;
-    eastConnector.position.set(26, 0.01, -4);
+    eastConnector.rotation.z = THREE.MathUtils.degToRad(-6);
+    eastConnector.position.set(32, 0.01, -6);
     scene.add(eastConnector);
 
-    const barnCourt = new THREE.Mesh(new THREE.PlaneGeometry(12, 38), materials.path);
+    const barnCourt = new THREE.Mesh(new THREE.PlaneGeometry(14, 40), materials.path);
     barnCourt.rotation.x = -Math.PI/2;
-    barnCourt.position.set(38, 0.01, -4);
+    barnCourt.position.set(48, 0.01, -6);
     scene.add(barnCourt);
 
-    const staffConnector = new THREE.Mesh(new THREE.PlaneGeometry(18, 6), materials.path);
+    const staffConnector = new THREE.Mesh(new THREE.PlaneGeometry(20, 6), materials.path);
     staffConnector.rotation.x = -Math.PI/2;
-    staffConnector.position.set(-10, 0.01, -12);
-    staffConnector.rotation.z = THREE.MathUtils.degToRad(10);
+    staffConnector.position.set(-12, 0.01, -6);
+    staffConnector.rotation.z = THREE.MathUtils.degToRad(22);
     scene.add(staffConnector);
 
-    const staffCourt = new THREE.Mesh(new THREE.PlaneGeometry(14, 18), materials.path);
+    const staffCourt = new THREE.Mesh(new THREE.PlaneGeometry(16, 20), materials.path);
     staffCourt.rotation.x = -Math.PI/2;
-    staffCourt.position.set(-16, 0.01, -26);
+    staffCourt.position.set(-24, 0.01, -8);
     scene.add(staffCourt);
 
     const innerLawn = new THREE.Mesh(new THREE.CircleGeometry(26, 48), materials.grassPatch);
     innerLawn.rotation.x = -Math.PI/2;
     innerLawn.position.y = 0.015;
     scene.add(innerLawn);
+  }
+
+  function plantCowshedBufferTrees(baseX, baseZ){
+    const buffer = [
+      { x: -12, z: -2, scale: 1.1 },
+      { x: -16, z: 3, scale: 0.95 },
+      { x: -20, z: -5, scale: 1.05 }
+    ];
+    buffer.forEach(({ x, z, scale })=>{
+      const tree = createMangoTree(scale);
+      tree.position.set(baseX + x, 0, baseZ + z);
+      scene.add(tree);
+    });
   }
 
   function scatterMangoTrees(){
@@ -692,8 +708,8 @@ function initGoshala3D(){
       if(Math.hypot(x, z) < 22) return false; // keep plaza open
       if(Math.abs(x) < 24 && Math.abs(z) < 18) return false; // main hall buffer
       if(Math.abs(x) < 14 && z > 12) return false; // avoid entry axis
-      if(Math.abs(x-38) < 30 && Math.abs(z+4) < 14) return false; // cowshed courtyard
-      if(Math.abs(x+16) < 12 && Math.abs(z+26) < 12) return false; // staff house buffer
+      if(Math.abs(x-48) < 22 && Math.abs(z+6) < 18) return false; // cowshed courtyard
+      if(Math.abs(x+24) < 14 && Math.abs(z+8) < 14) return false; // staff house buffer
       if(!canPlace(x, z, 7)) return false;
       const tree = createMangoTree(scale);
       tree.position.set(x, 0, z);
