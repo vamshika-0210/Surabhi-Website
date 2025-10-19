@@ -7,6 +7,14 @@
       const open = navLinks.classList.toggle('open');
       navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
+    navLinks.querySelectorAll('a').forEach((link)=>{
+      link.addEventListener('click', ()=>{
+        if(navLinks.classList.contains('open')){
+          navLinks.classList.remove('open');
+          navToggle.setAttribute('aria-expanded','false');
+        }
+      });
+    });
   }
 
   // Update footer year
@@ -88,4 +96,22 @@
 
     update();
   });
+
+  // Header transparency toggle
+  const header = document.querySelector('[data-header]');
+  const hero = document.querySelector('.hero-full');
+  if(header && hero && 'IntersectionObserver' in window){
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach((entry)=>{
+        header.classList.toggle('is-solid', !entry.isIntersecting);
+      });
+    }, { rootMargin: `-${parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-h')||'60',10)+10}px 0px 0px 0px`, threshold:0 });
+    observer.observe(hero);
+  } else if(header){
+    const onScroll = ()=>{
+      header.classList.toggle('is-solid', window.scrollY > 24);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive:true });
+  }
 })();

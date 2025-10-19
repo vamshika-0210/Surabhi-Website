@@ -13,13 +13,8 @@
     <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml">
     <link rel="stylesheet" href="assets/css/styles.css" />
   </head>
-  <body class="immersive">
-    <div id="goshala-360" class="immersive-bg" aria-hidden="true">
-      <canvas id="goshala-3d" aria-label="Interactive 3D view of the Goshala"></canvas>
-      <div class="immersive-filter" data-immersive-filter></div>
-      <div class="immersive-hint">Scroll to rotate • Drag to explore</div>
-    </div>
-    <header class="header">
+  <body class="landing">
+    <header class="header" data-header>
       <div class="container nav" role="navigation" aria-label="Primary">
         <a class="brand" href="index.html">
           <img src="assets/images/logo.svg" alt="Surabhi Goshala logo" width="36" height="36" />
@@ -40,63 +35,63 @@
       </div>
     </header>
 
-    <main class="immersive-content">
-      <section class="hero overlay-panel">
-        <div class="container hero-inner">
-          <div>
+    <main>
+      <section class="hero hero-full" aria-labelledby="hero-title">
+        <div id="goshala-360" class="hero-visual" aria-hidden="true">
+          <canvas id="goshala-3d" aria-label="Interactive 3D view of the Goshala"></canvas>
+          <div class="hero-visual-filter" data-immersive-filter></div>
+        </div>
+        <div class="hero-content container">
+          <div class="hero-panel">
             <p class="pill">Care • Compassion • Community</p>
-            <h1>Surabhi Goshala — Where Ancient Grace Roams Free.</h1>
-            <p class="muted">We rescue and care for cows with dignity and love. Join us to sponsor, donate, or volunteer — your support sustains lives.</p>
-            <div class="stack-10">
+            <h1 id="hero-title">Surabhi Goshala — Where Ancient Grace Roams Free.</h1>
+            <p class="muted hero-subhead">We rescue and care for cows with dignity and love. Join us to sponsor, donate, or volunteer — your support sustains lives.</p>
+            <div class="hero-actions">
               <a class="btn btn-primary" href="donate.html">Donate Now</a>
               <a class="btn btn-accent" href="about.html">See Our Programs</a>
             </div>
-            <div class="stats">
+            <div class="stats hero-stats">
               <div class="stat"><strong>150+</strong><span class="muted">Cows Sheltered</span></div>
               <div class="stat"><strong>25</strong><span class="muted">Acres Pasture</span></div>
               <div class="stat"><strong>50+</strong><span class="muted">Volunteers</span></div>
             </div>
           </div>
-          <div class="stack-16 hero-media">
-            <div class="hero-3d-panel overlay-panel-lite">
-              <header class="hero-3d-header">
-                <span>Interactive 3D Campus</span>
-                <span class="hero-3d-sub">Drag inside • Scroll outside to continue</span>
-              </header>
-              <div class="hero-3d-canvas" role="presentation">
-                <canvas id="goshala-3d-panel" aria-label="Interactive miniature view of Surabhi Goshala"></canvas>
-              </div>
+        </div>
+        <div class="hero-hint" data-hero-hint>Scroll to explore • Drag to orbit</div>
+      </section>
+
+      <section class="section section-support">
+        <div class="container">
+          <h2 class="section-title">How your support helps</h2>
+          <div class="grid grid-4 support-grid">
+            <div class="card">
+              <h3>Daily Feed</h3>
+              <p>Fodder, hay, and nutrition for every cow in our care.</p>
             </div>
-            <div class="hero-card">
-              <h2 class="section-title">How your support helps</h2>
-              <div class="grid grid-2">
-                <div class="card">
-                  <h3>Daily Feed</h3>
-                  <p>Fodder, hay, and nutrition for every cow in our care.</p>
-                </div>
-                <div class="card">
-                  <h3>Medical Care</h3>
-                  <p>Regular health checkups, vaccinations, and emergency treatment.</p>
-                </div>
-                <div class="card">
-                  <h3>Shelter & Safety</h3>
-                  <p>Clean sheds, safe pastures, and compassionate caregivers.</p>
-                </div>
-                <div class="card">
-                  <h3>Rescue & Rehab</h3>
-                  <p>Rescuing abandoned, injured, or distressed cows and calves.</p>
-                </div>
-              </div>
+            <div class="card">
+              <h3>Medical Care</h3>
+              <p>Regular health checkups, vaccinations, and emergency treatment.</p>
+            </div>
+            <div class="card">
+              <h3>Shelter & Safety</h3>
+              <p>Clean sheds, safe pastures, and compassionate caregivers.</p>
+            </div>
+            <div class="card">
+              <h3>Rescue & Rehab</h3>
+              <p>Rescuing abandoned, injured, or distressed cows and calves.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="overlay-panel">
-        <div class="container">
-          <h2 class="section-title">Our Programs</h2>
-          <p class="section-desc">From daily feeding to medical camps, your contributions power impactful programs that directly improve the lives of cows.</p>
-          <div class="grid grid-3">
+      <section class="section section-programs">
+        <div class="container programs-layout">
+          <div class="programs-intro">
+            <h2 class="section-title">Our Programs</h2>
+            <p class="section-desc">From daily feeding to medical camps, your contributions power impactful programs that directly improve the lives of cows.</p>
+            <a class="btn btn-outline" href="about.html">Learn more about our work</a>
+          </div>
+          <div class="grid grid-3 programs-grid">
             <div class="card">
               <h3>Annadaan</h3>
               <p>Support the daily fodder and water needs for healthy nutrition.</p>
@@ -113,7 +108,7 @@
         </div>
       </section>
 
-      <section class="surface overlay-panel">
+      <section class="section section-involvement surface">
         <div class="container">
           <h2 class="section-title">Get Involved</h2>
           <p class="section-desc">Your time, skills, or donations make a real difference.</p>
