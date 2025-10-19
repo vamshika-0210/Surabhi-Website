@@ -445,8 +445,8 @@ function initGoshala3D(){
     capBack.position.z = -7;
     barn.add(capBack);
 
-    barn.position.set(38, 0, -5);
-    barn.rotation.y = THREE.MathUtils.degToRad(-8);
+    barn.position.set(38, 0, -4);
+    barn.rotation.y = Math.PI / 2;
     scene.add(barn);
   }
 
@@ -465,8 +465,8 @@ function initGoshala3D(){
     roof.rotation.x = THREE.MathUtils.degToRad(-10);
     hut.add(roof);
 
-    hut.position.set(-28, 0, -4);
-    hut.rotation.y = THREE.MathUtils.degToRad(12);
+    hut.position.set(-34, 0, 14);
+    hut.rotation.y = THREE.MathUtils.degToRad(-18);
     scene.add(hut);
   }
 
@@ -481,15 +481,25 @@ function initGoshala3D(){
     frontPath.position.set(0, 0.01, 20);
     scene.add(frontPath);
 
-    const sidePath = new THREE.Mesh(new THREE.PlaneGeometry(60, 6), materials.path);
-    sidePath.rotation.set(-Math.PI/2, 0, THREE.MathUtils.degToRad(8));
-    sidePath.position.set(22, 0.01, -6);
-    scene.add(sidePath);
+    const eastConnector = new THREE.Mesh(new THREE.PlaneGeometry(20, 8), materials.path);
+    eastConnector.rotation.x = -Math.PI/2;
+    eastConnector.position.set(26, 0.01, -4);
+    scene.add(eastConnector);
 
-    const leftPath = new THREE.Mesh(new THREE.PlaneGeometry(26, 4.5), materials.path);
-    leftPath.rotation.set(-Math.PI/2, 0, THREE.MathUtils.degToRad(-20));
-    leftPath.position.set(-18, 0.01, 4);
-    scene.add(leftPath);
+    const barnCourt = new THREE.Mesh(new THREE.PlaneGeometry(12, 38), materials.path);
+    barnCourt.rotation.x = -Math.PI/2;
+    barnCourt.position.set(38, 0.01, -4);
+    scene.add(barnCourt);
+
+    const westConnector = new THREE.Mesh(new THREE.PlaneGeometry(22, 7), materials.path);
+    westConnector.rotation.x = -Math.PI/2;
+    westConnector.position.set(-20, 0.01, 8);
+    scene.add(westConnector);
+
+    const utilityCourt = new THREE.Mesh(new THREE.PlaneGeometry(18, 16), materials.path);
+    utilityCourt.rotation.x = -Math.PI/2;
+    utilityCourt.position.set(-34, 0.01, 14);
+    scene.add(utilityCourt);
 
     const innerLawn = new THREE.Mesh(new THREE.CircleGeometry(26, 48), materials.grassPatch);
     innerLawn.rotation.x = -Math.PI/2;
@@ -536,7 +546,7 @@ function initGoshala3D(){
       if(Math.hypot(x, z) < 22) return false; // keep plaza open
       if(Math.abs(x) < 14 && z > 12) return false; // avoid main front lawn
       if(Math.abs(x) < 24 && z > 6) return false; // keep entry sightlines clear
-      if(Math.abs(x-35) < 18 && Math.abs(z+8) < 10) return false; // keep barn sightline
+      if(Math.abs(x-38) < 16 && Math.abs(z+2) < 22) return false; // keep barn courtyard clear
       if(!canPlace(x, z, 7)) return false;
       const tree = createMangoTree(scale);
       tree.position.set(x, 0, z);
@@ -548,7 +558,7 @@ function initGoshala3D(){
     // structured orchard rows near the barn and entrance
     const orchards = [
       { origin: { x: -42, z: 18 }, rows: 3, cols: 4, spacingX: 13, spacingZ: 11, scale: 1.05 },
-      { origin: { x: 30, z: 26 }, rows: 2, cols: 4, spacingX: 12, spacingZ: 11, scale: 1 }
+      { origin: { x: 32, z: 30 }, rows: 2, cols: 4, spacingX: 12, spacingZ: 11, scale: 1 }
     ];
     orchards.forEach(({ origin, rows, cols, spacingX, spacingZ, scale })=>{
       for(let r=0;r<rows;r++){
@@ -627,13 +637,13 @@ function initGoshala3D(){
     ];
 
     const herd = [
-      { x: 22, z: 22, rot: Math.PI/8, palette: palettes[0], grazing: true },
-      { x: 34, z: 12, rot: Math.PI/3.5, palette: palettes[1], grazing: false },
-      { x: -30, z: 18, rot: Math.PI*0.92, palette: palettes[2], grazing: false },
-      { x: -40, z: -14, rot: Math.PI*0.68, palette: palettes[1], grazing: true },
-      { x: 28, z: -22, rot: Math.PI*1.1, palette: palettes[0], grazing: false },
-      { x: 10, z: -32, rot: Math.PI*1.35, palette: palettes[2], grazing: true },
-      { x: 40, z: -10, rot: Math.PI*0.15, palette: palettes[1], grazing: false }
+      { x: 20, z: 26, rot: Math.PI/9, palette: palettes[0], grazing: true },
+      { x: 10, z: -36, rot: Math.PI*1.2, palette: palettes[2], grazing: true },
+      { x: -28, z: 20, rot: Math.PI*0.9, palette: palettes[2], grazing: false },
+      { x: -40, z: -16, rot: Math.PI*0.65, palette: palettes[1], grazing: true },
+      { x: 34, z: -26, rot: Math.PI*1.08, palette: palettes[0], grazing: false },
+      { x: -14, z: 34, rot: Math.PI*0.4, palette: palettes[1], grazing: false },
+      { x: 42, z: 12, rot: Math.PI*0.18, palette: palettes[1], grazing: false }
     ];
 
     herd.forEach((cfg, idx)=>{
