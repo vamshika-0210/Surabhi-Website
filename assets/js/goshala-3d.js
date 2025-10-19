@@ -227,8 +227,9 @@ function initGoshala3D(){
     hall.add(roofGroup);
 
     const signage = createSignPlate('Nitai Gauranga Temple', 12, 2.2);
-    signage.position.set(0, 9.2, windowConfig.inset + 0.55);
-    signage.rotation.x = -THREE.MathUtils.degToRad(24);
+    signage.position.set(0, 6.4, windowConfig.inset + 0.32);
+    signage.rotation.set(-THREE.MathUtils.degToRad(88), 0, 0);
+    signage.castShadow = false;
     hall.add(signage);
 
     addTempleInterior(hall);
