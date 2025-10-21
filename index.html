@@ -140,77 +140,130 @@
         <div class="container">
           <h2 class="section-title">Meet the Surabhi Family</h2>
           <p class="section-desc">Our rescued herd is a tapestry of personalities. From calm matriarchs to playful protectors, every name carries a story of resilience and grace.</p>
-          <div class="family-tree" aria-label="Surabhi herd family tree">
-            <ol class="tree-level" role="tree">
-              <li class="tree-branch" role="treeitem" aria-expanded="true">
-                <div class="tree-card tree-root">
+          <div class="family-tree-desktop" aria-label="Surabhi herd family tree">
+            <svg viewBox="0 0 100 65" aria-hidden="true">
+              <path d="M46 22 C40 26 34 29 30 32" stroke="rgba(34,60,36,0.2)" stroke-width="1.05" fill="none" stroke-linecap="round"/>
+              <path d="M50 22 C50 27 50 29 50 32" stroke="rgba(34,60,36,0.2)" stroke-width="1.05" fill="none" stroke-linecap="round"/>
+              <path d="M54 22 C60 26 66 29 70 32" stroke="rgba(34,60,36,0.2)" stroke-width="1.05" fill="none" stroke-linecap="round"/>
+              <path d="M30 36 C26 40 23 44 20 48" stroke="rgba(34,60,36,0.2)" stroke-width="1.05" fill="none" stroke-linecap="round"/>
+              <path d="M30 36 C31 40 32 44 34 48" stroke="rgba(34,60,36,0.2)" stroke-width="1.05" fill="none" stroke-linecap="round"/>
+              <path d="M50 36 C47 40 45 44 44 48" stroke="rgba(34,60,36,0.2)" stroke-width="1.05" fill="none" stroke-linecap="round"/>
+              <path d="M50 36 C53 40 55 44 56 48" stroke="rgba(34,60,36,0.2)" stroke-width="1.05" fill="none" stroke-linecap="round"/>
+              <path d="M70 36 C69 40 68 44 66 48" stroke="rgba(34,60,36,0.2)" stroke-width="1.05" fill="none" stroke-linecap="round"/>
+              <path d="M70 36 C73 40 76 44 78 48" stroke="rgba(34,60,36,0.2)" stroke-width="1.05" fill="none" stroke-linecap="round"/>
+            </svg>
+            <div class="family-tree-desktop-grid">
+              <div class="family-tree-row root">
+                <article class="family-card root">
                   <h3>Saraswathi</h3>
                   <p>The serene queen of our herd.</p>
+                </article>
+              </div>
+              <div class="family-tree-row parents">
+                <article class="family-card parent" data-branch="aruni">
+                  <h4>Aruni</h4>
+                  <p>Gentle strength and warmth.</p>
+                </article>
+                <article class="family-card parent" data-branch="yamuna">
+                  <h4>Yamuna</h4>
+                  <p>Graceful spirit of the goshala.</p>
+                </article>
+                <article class="family-card parent" data-branch="balaram">
+                  <h4>Balaram</h4>
+                  <p>Playful guardian of the pasture.</p>
+                </article>
+              </div>
+              <div class="family-tree-row children">
+                <article class="family-card child" data-parent="aruni">
+                  <h5>Tulsi</h5>
+                  <p>Soft eyes, steady heart.</p>
+                </article>
+                <article class="family-card child" data-parent="aruni">
+                  <h5>Tungi</h5>
+                  <p>Curious and kind.</p>
+                </article>
+                <article class="family-card child" data-parent="yamuna">
+                  <h5>Vaudev</h5>
+                  <p>Majestic and calm.</p>
+                </article>
+                <article class="family-card child" data-parent="yamuna">
+                  <h5>Hamsi</h5>
+                  <p>Nurturing and loving.</p>
+                </article>
+                <article class="family-card child" data-parent="balaram">
+                  <h5>Kumkum</h5>
+                  <p>Joyful and bright.</p>
+                </article>
+                <article class="family-card child" data-parent="balaram">
+                  <h5>Pradyumna</h5>
+                  <p>Brave and resilient.</p>
+                </article>
+              </div>
+            </div>
+          </div>
+
+          <div class="family-tree-mobile" aria-label="Surabhi herd family tree">
+            <article class="mobile-node mobile-root">
+              <h3>Saraswathi</h3>
+              <p>The serene queen of our herd.</p>
+            </article>
+            <article class="mobile-branch">
+              <header>
+                <div>
+                  <h4>Aruni</h4>
+                  <p>Gentle strength and warmth.</p>
                 </div>
-                <ol class="tree-level" role="group">
-                  <li class="tree-branch" role="treeitem" aria-expanded="true">
-                    <div class="tree-card">
-                      <h4>Aruni</h4>
-                      <p>Gentle strength and warmth.</p>
-                    </div>
-                    <ol class="tree-level" role="group">
-                      <li role="treeitem">
-                        <div class="tree-card leaf">
-                          <h5>Tulsi</h5>
-                          <p>Soft eyes, steady heart.</p>
-                        </div>
-                      </li>
-                      <li role="treeitem">
-                        <div class="tree-card leaf">
-                          <h5>Tungi</h5>
-                          <p>Curious and kind.</p>
-                        </div>
-                      </li>
-                    </ol>
-                  </li>
-                  <li class="tree-branch" role="treeitem" aria-expanded="true">
-                    <div class="tree-card">
-                      <h4>Yamuna</h4>
-                      <p>Graceful spirit of the goshala.</p>
-                    </div>
-                    <ol class="tree-level" role="group">
-                      <li role="treeitem">
-                        <div class="tree-card leaf">
-                          <h5>Vaudev</h5>
-                          <p>Majestic and calm.</p>
-                        </div>
-                      </li>
-                      <li role="treeitem">
-                        <div class="tree-card leaf">
-                          <h5>Hamsi</h5>
-                          <p>Nurturing and loving.</p>
-                        </div>
-                      </li>
-                    </ol>
-                  </li>
-                  <li class="tree-branch" role="treeitem" aria-expanded="true">
-                    <div class="tree-card">
-                      <h4>Balaram</h4>
-                      <p>Playful guardian of the pasture.</p>
-                    </div>
-                    <ol class="tree-level" role="group">
-                      <li role="treeitem">
-                        <div class="tree-card leaf">
-                          <h5>Kumkum</h5>
-                          <p>Joyful and bright.</p>
-                        </div>
-                      </li>
-                      <li role="treeitem">
-                        <div class="tree-card leaf">
-                          <h5>Pradyumna</h5>
-                          <p>Brave and resilient.</p>
-                        </div>
-                      </li>
-                    </ol>
-                  </li>
-                </ol>
-              </li>
-            </ol>
+                <span class="badge">Matriarch</span>
+              </header>
+              <ul class="mobile-children">
+                <li>
+                  <h5>Tulsi</h5>
+                  <p>Soft eyes, steady heart.</p>
+                </li>
+                <li>
+                  <h5>Tungi</h5>
+                  <p>Curious and kind.</p>
+                </li>
+              </ul>
+            </article>
+            <article class="mobile-branch">
+              <header>
+                <div>
+                  <h4>Yamuna</h4>
+                  <p>Graceful spirit of the goshala.</p>
+                </div>
+                <span class="badge">Matriarch</span>
+              </header>
+              <ul class="mobile-children">
+                <li>
+                  <h5>Vaudev</h5>
+                  <p>Majestic and calm.</p>
+                </li>
+                <li>
+                  <h5>Hamsi</h5>
+                  <p>Nurturing and loving.</p>
+                </li>
+              </ul>
+            </article>
+            <article class="mobile-branch">
+              <header>
+                <div>
+                  <h4>Balaram</h4>
+                  <p>Playful guardian of the pasture.</p>
+                </div>
+                <span class="badge">Patron</span>
+              </header>
+              <ul class="mobile-children">
+                <li>
+                  <h5>Kumkum</h5>
+                  <p>Joyful and bright.</p>
+                </li>
+                <li>
+                  <h5>Pradyumna</h5>
+                  <p>Brave and resilient.</p>
+                </li>
+              </ul>
+            </article>
           </div>
         </div>
       </section>
