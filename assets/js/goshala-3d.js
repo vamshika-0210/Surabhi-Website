@@ -28,6 +28,13 @@ function initGoshala3D(){
   const section = document.getElementById('goshala-360');
   if(!canvasBg || !section) return;
   const filterOverlay = document.querySelector('[data-immersive-filter]');
+  const mobilePoster = window.matchMedia('(max-width: 760px)');
+  if(mobilePoster.matches){
+    canvasBg.style.display = 'none';
+    if(canvasPanel) canvasPanel.style.display = 'none';
+    if(filterOverlay){ filterOverlay.style.display = 'none'; }
+    return;
+  }
 
   // Renderers
   const rendererBg = new THREE.WebGLRenderer({ canvas: canvasBg, antialias:true, alpha:false });

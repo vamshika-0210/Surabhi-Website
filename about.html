@@ -3,68 +3,150 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>About | Goshala</title>
+    <title>About | Surabhi Goshala</title>
     <meta name="description" content="About our goshala — mission, values, and team.">
     <meta name="theme-color" content="#2e7d32" />
     <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml">
     <link rel="stylesheet" href="assets/css/styles.css" />
   </head>
-  <body>
-    <header class="header">
+  <body class="page page-about">
+    <header class="header" data-header>
       <div class="container nav" role="navigation" aria-label="Primary">
         <a class="brand" href="index.html">
-          <img src="assets/images/logo.svg" alt="Goshala logo" width="36" height="36" />
-          <span>Goshala</span>
+          <img src="assets/images/logo.svg" alt="Surabhi Goshala logo" width="36" height="36" />
+          <span>Surabhi Goshala</span>
         </a>
         <nav class="nav-links" data-nav-links>
-          <a href="index.html">Home</a>
-          <a href="about.html" aria-current="page">About</a>
-          <a href="donate.html">Donate</a>
-          <a href="gallery.html">Gallery</a>
-          <a href="contact.html">Contact</a>
+          <div class="nav-links-list">
+            <a href="index.html">Home</a>
+            <a href="about.html" aria-current="page">About</a>
+            <a href="donate.html">Donate</a>
+            <a href="contact.html">Contact</a>
+          </div>
+          <div class="nav-links-actions">
+            <a class="btn btn-ghost" href="index.html">Back Home</a>
+            <a class="btn btn-primary" href="donate.html">Donate</a>
+          </div>
         </nav>
-        <div class="nav-cta">
-          <a class="btn" href="index.html">Back Home</a>
-          <a class="btn btn-primary" href="donate.html">Donate</a>
-          <button class="menu-toggle" data-menu-toggle aria-label="Toggle menu" aria-expanded="false">Menu</button>
-        </div>
+        <button class="menu-toggle" data-menu-toggle aria-label="Toggle menu" aria-expanded="false">
+          <span class="menu-toggle-icon" aria-hidden="true"></span>
+          <span class="menu-toggle-label">Menu</span>
+        </button>
       </div>
     </header>
 
     <main>
-      <section class="hero">
+      <section class="page-hero">
         <div class="container">
-          <h1>About Our Goshala</h1>
-          <p class="muted">We exist to protect and care for cows — with compassion, dignity, and community support.</p>
+          <span class="page-eyebrow">About Surabhi</span>
+          <h1>Care that keeps every gentle soul thriving.</h1>
+          <p>Surabhi Goshala is a sanctuary built on seva, sustainable routines, and heartfelt community participation. Every dawn begins with aarti, healing herbs, and hands that believe kindness is an everyday practice.</p>
+          <div class="page-hero-stats">
+            <div class="stat-card">
+              <strong>120+</strong>
+              <span>Cows sheltered with dignity</span>
+            </div>
+            <div class="stat-card">
+              <strong>42</strong>
+              <span>Weekend volunteers on rotation</span>
+            </div>
+            <div class="stat-card">
+              <strong>18</strong>
+              <span>Acres of shaded grazing &amp; fodder</span>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section>
-        <div class="container grid grid-2">
-          <div class="card">
-            <h2 class="section-title">Our Mission</h2>
-            <p>To provide safe shelter, nutrition, and medical care for cows in need, while promoting kindness and sustainable living within our community.</p>
-          </div>
-          <div class="card">
-            <h2 class="section-title">Our Values</h2>
-            <ul class="stack-10">
-              <li><strong>Compassion:</strong> Every life deserves care and respect.</li>
-              <li><strong>Integrity:</strong> Transparent and responsible stewardship of resources.</li>
-              <li><strong>Community:</strong> Bringing people together for a meaningful cause.</li>
+      <section class="page-section">
+        <div class="container panel-grid two">
+          <article class="card-panel">
+            <header>
+              <span class="page-eyebrow">Our Mission</span>
+              <h2>Compassion in daily action</h2>
+            </header>
+            <p class="lead">We exist to rescue, nourish, and rehabilitate cows with dignity. Every routine — from fodder prep to bedtime checks — is designed to keep our herd calm, healthy, and loved.</p>
+            <ul class="feature-list">
+              <li><strong>Holistic care:</strong> Balanced nutrition, native herbs, and regular veterinary wellness.</li>
+              <li><strong>Community seva:</strong> Guided volunteer slots for families, schools, and corporate teams.</li>
+              <li><strong>Regenerative campus:</strong> Rainwater harvesting, composting, and fodder grown onsite.</li>
             </ul>
-          </div>
+          </article>
+          <article class="card-panel">
+            <header>
+              <span class="page-eyebrow">Our Values</span>
+              <h2>Principles that anchor Surabhi</h2>
+            </header>
+            <ul class="feature-list">
+              <li><strong>Compassion:</strong> Every life is sacred; our schedule bends to their comfort.</li>
+              <li><strong>Integrity:</strong> Transparent operations, audited books, and open visitor hours.</li>
+              <li><strong>Stewardship:</strong> Thoughtful use of resources and mindful expansion of the goshala.</li>
+              <li><strong>Learning:</strong> Workshops that spread goseva practices across allied communities.</li>
+            </ul>
+          </article>
         </div>
       </section>
 
-      <section class="surface">
-        <div class="container">
-          <h2 class="section-title">Team & Volunteers</h2>
-          <p class="section-desc">A small, dedicated team supported by a growing volunteer network. Join us for weekend seva, feeding, cleaning, and outreach.</p>
-          <div class="grid grid-3">
-            <div class="card"><h3>Founder</h3><p>Vision, direction, and community partnerships.</p></div>
-            <div class="card"><h3>Veterinary Lead</h3><p>Healthcare, wellness, and emergency response.</p></div>
-            <div class="card"><h3>Operations</h3><p>Feeding, shelter, and day-to-day care.</p></div>
-          </div>
+      <section class="page-section">
+        <div class="container panel-grid">
+          <article class="card-panel">
+            <header>
+              <span class="page-eyebrow">Daily rhythm</span>
+              <h2>From sunrise bells to moonlit check-ins</h2>
+            </header>
+            <p class="lead">A typical day begins with mangala aarti, warm water sponge baths, and fresh-cut fodder. Afternoons are for physiotherapy walks, shade rotations, and hoof care. Nights end with soothing chants and final patrols.</p>
+            <div class="mini-card-grid">
+              <div class="mini-card">
+                <h4>Fodder Kitchen</h4>
+                <p>Hydroponic fodder, herbal supplements, and jaggery mixes portioned for each cow.</p>
+              </div>
+              <div class="mini-card">
+                <h4>Healing Wing</h4>
+                <p>Isolation bays with heat lamps, herbal wraps, and a dedicated vet-on-call desk.</p>
+              </div>
+              <div class="mini-card">
+                <h4>Community Courtyard</h4>
+                <p>Story circles, go puja, and seva workshops that connect visitors with our herd.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="page-section">
+        <div class="container panel-grid">
+          <article class="card-panel">
+            <header>
+              <span class="page-eyebrow">Team &amp; Volunteers</span>
+              <h2>People who keep Surabhi flowing</h2>
+            </header>
+            <p class="lead">A small, dedicated core team is supported by volunteer cohorts who bring skills ranging from veterinary science to storytelling and fundraising.</p>
+            <div class="mini-card-grid">
+              <div class="mini-card">
+                <h4>Founder</h4>
+                <p>Vision, partnerships, and the culture of seva.</p>
+              </div>
+              <div class="mini-card">
+                <h4>Veterinary Lead</h4>
+                <p>Healthcare, wellness plans, and emergency response.</p>
+              </div>
+              <div class="mini-card">
+                <h4>Operations</h4>
+                <p>Feeding schedules, shelter upkeep, and volunteer onboarding.</p>
+              </div>
+              <div class="mini-card">
+                <h4>Community Desk</h4>
+                <p>Visits, donor journeys, and awareness programs.</p>
+              </div>
+            </div>
+            <div class="cta-band">
+              <strong>Join a seva weekend or host a goseva circle in your community.</strong>
+              <div class="cta-band-actions">
+                <a class="btn btn-primary" href="donate.html">Support Monthly Care</a>
+                <a class="btn btn-outline" href="contact.html">Plan your visit</a>
+              </div>
+            </div>
+          </article>
         </div>
       </section>
     </main>
@@ -74,8 +156,8 @@
         <div class="cols">
           <div>
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-              <img src="assets/images/logo.svg" width="28" height="28" alt="Goshala logo small" loading="lazy" decoding="async">
-              <strong>Goshala</strong>
+              <img src="assets/images/logo.svg" width="28" height="28" alt="Surabhi Goshala logo small" loading="lazy" decoding="async">
+              <strong>Surabhi Goshala</strong>
             </div>
             <p class="muted">A registered non-profit goshala caring for cows with compassion and dignity.</p>
           </div>
@@ -92,11 +174,11 @@
             <p class="stack-6">
               <a href="mailto:hello@goshala.example">hello@goshala.example</a>
               <a href="tel:+911234567890">+91 12345 67890</a>
-              <a href="contact.html">Contact form</a>
+              <a href="contact.html">Contact page</a>
             </p>
           </div>
         </div>
-        <p class="copyright">© <span data-year></span> Goshala. All rights reserved.</p>
+        <p class="copyright">© <span data-year></span> Surabhi Goshala. All rights reserved.</p>
       </div>
     </footer>
 

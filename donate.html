@@ -9,75 +9,132 @@
     <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml">
     <link rel="stylesheet" href="assets/css/styles.css" />
   </head>
-  <body>
-    <header class="header">
+  <body class="page page-donate">
+    <header class="header" data-header>
       <div class="container nav" role="navigation" aria-label="Primary">
         <a class="brand" href="index.html">
           <img src="assets/images/logo.svg" alt="Surabhi Goshala logo" width="36" height="36" />
           <span>Surabhi Goshala</span>
         </a>
         <nav class="nav-links" data-nav-links>
-          <a href="index.html">Home</a>
-          <a href="about.html">About</a>
-          <a href="donate.html" aria-current="page">Donate</a>
-          <a href="gallery.html">Gallery</a>
-          <a href="contact.html">Contact</a>
+          <div class="nav-links-list">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="donate.html" aria-current="page">Donate</a>
+            <a href="contact.html">Contact</a>
+          </div>
+          <div class="nav-links-actions">
+            <a class="btn btn-ghost" href="index.html">Back Home</a>
+            <a class="btn btn-primary" href="#tiers">Sponsor Now</a>
+          </div>
         </nav>
-        <div class="nav-cta">
-          <a class="btn" href="index.html">Back Home</a>
-          <a class="btn btn-primary" href="#tiers">Sponsor Now</a>
-          <button class="menu-toggle" data-menu-toggle aria-label="Toggle menu" aria-expanded="false">Menu</button>
-        </div>
+        <button class="menu-toggle" data-menu-toggle aria-label="Toggle menu" aria-expanded="false">
+          <span class="menu-toggle-icon" aria-hidden="true"></span>
+          <span class="menu-toggle-label">Menu</span>
+        </button>
       </div>
     </header>
 
     <main>
-      <section class="hero">
+      <section class="page-hero">
         <div class="container">
-          <h1>Donate & Sponsor</h1>
-          <p class="muted">Your contribution directly funds fodder, medical care, and shelter for rescued cows. Choose a one-time donation or sponsor monthly.</p>
-        </div>
-      </section>
-
-      <section id="tiers">
-        <div class="container">
-          <h2 class="section-title">Sponsorship Tiers</h2>
-          <p class="section-desc">Pick a plan that works for you. You can cancel anytime.</p>
-          <div class="grid grid-3">
-            <div class="card">
-              <h3>Feed a Cow</h3>
-              <p class="muted">₹1,000/month covers fodder and basics.</p>
-              <a class="btn btn-primary" href="#" aria-disabled="true">Start ₹1,000/month</a>
+          <span class="page-eyebrow">Support Surabhi</span>
+          <h1>Your generosity keeps fodder bowls brimming and hooves healthy.</h1>
+          <p>Every contribution sustains daily feed, medical care, and the gentle routines that help rescues heal. Choose a sponsorship that matches your heart — monthly, annual, or a one-time seva.</p>
+          <div class="page-hero-stats">
+            <div class="stat-card">
+              <strong>₹1,000</strong>
+              <span>Feeds one cow with greens &amp; grains for a month</span>
             </div>
-            <div class="card">
-              <h3>Medical Care</h3>
-              <p class="muted">₹2,500/month supports meds and checkups.</p>
-              <a class="btn btn-primary" href="#" aria-disabled="true">Start ₹2,500/month</a>
+            <div class="stat-card">
+              <strong>₹2,500</strong>
+              <span>Funds vaccinations &amp; vet visits for critical rescues</span>
             </div>
-            <div class="card">
-              <h3>Full Sponsorship</h3>
-              <p class="muted">₹5,000/month covers comprehensive care.</p>
-              <a class="btn btn-primary" href="#" aria-disabled="true">Start ₹5,000/month</a>
+            <div class="stat-card">
+              <strong>₹5,000</strong>
+              <span>Covers holistic care for a senior or special-needs cow</span>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="surface">
-        <div class="container grid grid-2">
-          <div>
-            <h2 class="section-title">UPI / QR</h2>
-            <p class="section-desc">Scan and pay using your favorite UPI app.</p>
-            <img src="assets/images/placeholder-qr.svg" alt="Placeholder UPI QR code. Replace with your actual QR." width="300" height="300" loading="lazy" decoding="async">
-          </div>
-          <div class="card">
-            <h2 class="section-title">Bank Transfer</h2>
-            <div class="stack-10">
-              <p><strong>Account Name:</strong> Goshala Trust</p>
-              <p><strong>Account Number:</strong> 000000000000</p>
-              <p><strong>IFSC:</strong> ABCD0123456</p>
-              <p><strong>Bank & Branch:</strong> Your Bank, City</p>
-              <p class="muted">Please email your transaction details to <a href="mailto:donations@goshala.example">donations@goshala.example</a> for a receipt.</p>
+      <section class="page-section" id="tiers">
+        <div class="container panel-grid three">
+          <article class="card-panel donation-tier">
+            <header>
+              <span class="page-eyebrow">Monthly seva</span>
+              <h2>Feed a Cow</h2>
+            </header>
+            <p class="lead">₹1,000/month keeps one gentle soul nourished with greens, minerals, and warm mash.</p>
+            <a class="btn btn-primary" href="#" aria-disabled="true">Start ₹1,000/month</a>
+          </article>
+          <article class="card-panel donation-tier">
+            <header>
+              <span class="page-eyebrow">Healing fund</span>
+              <h2>Medical Care</h2>
+            </header>
+            <p class="lead">₹2,500/month powers vaccinations, hoof care, physiotherapy, and emergency meds.</p>
+            <a class="btn btn-primary" href="#" aria-disabled="true">Start ₹2,500/month</a>
+          </article>
+          <article class="card-panel donation-tier">
+            <header>
+              <span class="page-eyebrow">Full sponsorship</span>
+              <h2>Holistic Care</h2>
+            </header>
+            <p class="lead">₹5,000/month covers complete shelter, feed, diagnostics, and enrichment for a rescued cow.</p>
+            <a class="btn btn-primary" href="#" aria-disabled="true">Start ₹5,000/month</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="page-section">
+        <div class="container panel-grid two">
+          <article class="card-panel">
+            <header>
+              <span class="page-eyebrow">UPI / QR</span>
+              <h2>Scan &amp; pay in seconds</h2>
+            </header>
+            <p class="lead">Use any UPI app to make an instant contribution. Replace the placeholder below with your live QR when you go live.</p>
+            <img src="assets/images/placeholder-qr.svg" alt="Placeholder UPI QR code. Replace with your actual QR." width="320" height="320" loading="lazy" decoding="async">
+          </article>
+          <article class="card-panel">
+            <header>
+              <span class="page-eyebrow">Bank transfer</span>
+              <h2>Direct account details</h2>
+            </header>
+            <div class="contact-card">
+              <dl>
+                <div>
+                  <dt>Account Name</dt>
+                  <dd>Goshala Trust</dd>
+                </div>
+                <div>
+                  <dt>Account Number</dt>
+                  <dd>000000000000</dd>
+                </div>
+                <div>
+                  <dt>IFSC</dt>
+                  <dd>ABCD0123456</dd>
+                </div>
+                <div>
+                  <dt>Bank &amp; Branch</dt>
+                  <dd>Your Bank, City</dd>
+                </div>
+              </dl>
+            </div>
+            <p class="lead">Email your transaction reference to <a href="mailto:donations@goshala.example">donations@goshala.example</a> so we can share a receipt and story from the goshala.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="page-section">
+        <div class="container">
+          <div class="cta-band">
+            <strong>Looking to sponsor as a group or celebrate a milestone with goseva?</strong>
+            <p class="lead">We curate custom seva days for families, satsang groups, and teams. Write to us with your preferred dates so we can plan a meaningful experience.</p>
+            <div class="cta-band-actions">
+              <a class="btn btn-primary" href="contact.html">Plan a visit</a>
+              <a class="btn btn-outline" href="mailto:hello@goshala.example">Email the seva desk</a>
             </div>
           </div>
         </div>
@@ -107,11 +164,11 @@
             <p class="stack-6">
               <a href="mailto:hello@goshala.example">hello@goshala.example</a>
               <a href="tel:+911234567890">+91 12345 67890</a>
-              <a href="contact.html">Contact form</a>
+              <a href="contact.html">Contact page</a>
             </p>
           </div>
         </div>
-        <p class="copyright">© <span data-year></span> Goshala. All rights reserved.</p>
+        <p class="copyright">© <span data-year></span> Surabhi Goshala. All rights reserved.</p>
       </div>
     </footer>
 

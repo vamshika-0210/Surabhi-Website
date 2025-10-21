@@ -14,24 +14,33 @@
     <link rel="stylesheet" href="assets/css/styles.css" />
   </head>
   <body class="landing">
-    <header class="header" data-header>
+    <noscript>
+      <style>
+        .mobile-hero-hidden{opacity:1 !important;transform:none !important;pointer-events:auto !important;}
+      </style>
+    </noscript>
+    <header class="header mobile-hero-hidden" data-header>
       <div class="container nav" role="navigation" aria-label="Primary">
         <a class="brand" href="index.html">
           <img src="assets/images/logo.svg" alt="Surabhi Goshala logo" width="36" height="36" />
           <span>Surabhi Goshala</span>
         </a>
         <nav class="nav-links" data-nav-links>
-          <a href="index.html" aria-current="page">Home</a>
-          <a href="about.html">About</a>
-          <a href="donate.html">Donate</a>
-          <a href="gallery.html">Gallery</a>
-          <a href="contact.html">Contact</a>
+          <div class="nav-links-list">
+            <a href="index.html" aria-current="page">Home</a>
+            <a href="about.html">About</a>
+            <a href="donate.html">Donate</a>
+            <a href="contact.html">Contact</a>
+          </div>
+          <div class="nav-links-actions">
+            <a class="btn btn-ghost" href="about.html">Our Work</a>
+            <a class="btn btn-primary" href="donate.html">Sponsor a Cow</a>
+          </div>
         </nav>
-        <div class="nav-cta">
-          <a class="btn" href="about.html">Our Work</a>
-          <a class="btn btn-primary" href="donate.html">Sponsor a Cow</a>
-          <button class="menu-toggle" data-menu-toggle aria-label="Toggle menu" aria-expanded="false">Menu</button>
-        </div>
+        <button class="menu-toggle" data-menu-toggle aria-label="Toggle menu" aria-expanded="false">
+          <span class="menu-toggle-icon" aria-hidden="true"></span>
+          <span class="menu-toggle-label">Menu</span>
+        </button>
       </div>
     </header>
 
@@ -41,7 +50,8 @@
           <canvas id="goshala-3d" aria-label="Interactive 3D view of the Goshala"></canvas>
           <div class="hero-visual-filter" data-immersive-filter></div>
         </div>
-        <div class="hero-content">
+        <div class="hero-mobile-poster" aria-hidden="true"></div>
+        <div class="hero-content mobile-hero-hidden" data-hero-content>
           <div class="hero-strip container">
             <div class="hero-strip-text">
               <span class="hero-eyebrow">Care • Compassion • Community</span>
@@ -55,6 +65,26 @@
           </div>
         </div>
         <div class="hero-hint" data-hero-hint>Scroll to explore • Drag to orbit</div>
+      </section>
+
+      <section class="section section-immersive" aria-label="Highlights of the immersive goshala walkthrough">
+        <div class="container immersive-grid">
+          <article class="immersive-card">
+            <span class="immersive-label">Kamadhenu Shrine</span>
+            <h3>The heart of daily seva</h3>
+            <p>Around the sanctum, caretakers gather for morning aarti and gentle grooming rituals that anchor our herd in calm devotion.</p>
+          </article>
+          <article class="immersive-card">
+            <span class="immersive-label">Shelter &amp; Fodder Bay</span>
+            <h3>Where care feels like home</h3>
+            <p>Walk through airy sheds, mineral troughs, and feed storage to see how every donation keeps bedding fresh and bowls brimming.</p>
+          </article>
+          <article class="immersive-card">
+            <span class="immersive-label">Pasture Loop</span>
+            <h3>Greens that heal</h3>
+            <p>Follow the pathway encircling medicinal greens and mango trees that shade Saraswathi and friends during lazy afternoons.</p>
+          </article>
+        </div>
       </section>
 
       <section class="section section-support">
@@ -77,6 +107,166 @@
               <h3>Rescue & Rehab</h3>
               <p>Rescuing abandoned, injured, or distressed cows and calves.</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-mission" id="mission">
+        <div class="container mission-grid">
+          <article class="mission-card">
+            <span class="pill pill-soft">Mission</span>
+            <h2>Compassion in daily action</h2>
+            <p>We rescue, nourish, and rehabilitate cows with dignity, guided by the belief that seva blossoms through mindful routines.</p>
+            <ul class="mission-list">
+              <li>Round-the-clock caretakers ensuring gentle handling.</li>
+              <li>Nutrition plans balancing fodder, minerals, and herbs.</li>
+              <li>Community engagement that transforms kindness into habit.</li>
+            </ul>
+          </article>
+          <article class="mission-card vision-card">
+            <span class="pill pill-soft">Vision</span>
+            <h2>Sanctuary that sustains</h2>
+            <p>We imagine a goshala where every cow thrives, volunteers feel at home, and ecological cycles stay in harmony with tradition.</p>
+            <ul class="mission-list">
+              <li>Expand shaded pasture and rainwater harvesting swales.</li>
+              <li>Offer immersive goseva experiences for families and schools.</li>
+              <li>Model a replicable goshala blueprint for allied communities.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section section-family" id="family">
+        <div class="container">
+          <h2 class="section-title">Meet the Surabhi Family</h2>
+          <p class="section-desc">Our rescued herd is a tapestry of personalities. From calm matriarchs to playful protectors, every name carries a story of resilience and grace.</p>
+          <div class="family-tree" aria-label="Surabhi herd family tree">
+            <ol class="tree-level" role="tree">
+              <li class="tree-branch" role="treeitem" aria-expanded="true">
+                <div class="tree-card tree-root">
+                  <h3>Saraswathi</h3>
+                  <p>The serene queen of our herd.</p>
+                </div>
+                <ol class="tree-level" role="group">
+                  <li class="tree-branch" role="treeitem" aria-expanded="true">
+                    <div class="tree-card">
+                      <h4>Aruni</h4>
+                      <p>Gentle strength and warmth.</p>
+                    </div>
+                    <ol class="tree-level" role="group">
+                      <li role="treeitem">
+                        <div class="tree-card leaf">
+                          <h5>Tulsi</h5>
+                          <p>Soft eyes, steady heart.</p>
+                        </div>
+                      </li>
+                      <li role="treeitem">
+                        <div class="tree-card leaf">
+                          <h5>Tungi</h5>
+                          <p>Curious and kind.</p>
+                        </div>
+                      </li>
+                    </ol>
+                  </li>
+                  <li class="tree-branch" role="treeitem" aria-expanded="true">
+                    <div class="tree-card">
+                      <h4>Yamuna</h4>
+                      <p>Graceful spirit of the goshala.</p>
+                    </div>
+                    <ol class="tree-level" role="group">
+                      <li role="treeitem">
+                        <div class="tree-card leaf">
+                          <h5>Vaudev</h5>
+                          <p>Majestic and calm.</p>
+                        </div>
+                      </li>
+                      <li role="treeitem">
+                        <div class="tree-card leaf">
+                          <h5>Hamsi</h5>
+                          <p>Nurturing and loving.</p>
+                        </div>
+                      </li>
+                    </ol>
+                  </li>
+                  <li class="tree-branch" role="treeitem" aria-expanded="true">
+                    <div class="tree-card">
+                      <h4>Balaram</h4>
+                      <p>Playful guardian of the pasture.</p>
+                    </div>
+                    <ol class="tree-level" role="group">
+                      <li role="treeitem">
+                        <div class="tree-card leaf">
+                          <h5>Kumkum</h5>
+                          <p>Joyful and bright.</p>
+                        </div>
+                      </li>
+                      <li role="treeitem">
+                        <div class="tree-card leaf">
+                          <h5>Pradyumna</h5>
+                          <p>Brave and resilient.</p>
+                        </div>
+                      </li>
+                    </ol>
+                  </li>
+                </ol>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-gallery" id="gallery">
+        <div class="container">
+          <h2 class="section-title">Life at Surabhi</h2>
+          <p class="section-desc">Take a slow stroll through moments captured around the goshala — the same scenes you can orbit inside the 3D walkthrough.</p>
+          <div class="carousel" data-carousel>
+            <div class="carousel-viewport">
+              <div class="carousel-track" data-carousel-track>
+                <div class="carousel-slide">
+                  <img src="assets/images/surabhi/saraswathi.jpg" alt="Saraswathi — The serene queen of our herd." loading="lazy" decoding="async" />
+                  <div class="carousel-caption">Saraswathi — The serene queen of our herd.</div>
+                </div>
+                <div class="carousel-slide">
+                  <img src="assets/images/surabhi/aruni.jpg" alt="Aruni — Gentle strength and warmth." loading="lazy" decoding="async" />
+                  <div class="carousel-caption">Aruni — Gentle strength and warmth.</div>
+                </div>
+                <div class="carousel-slide">
+                  <img src="assets/images/surabhi/balaram.jpg" alt="Balaram — Playful guardian of the pasture." loading="lazy" decoding="async" />
+                  <div class="carousel-caption">Balaram — Playful guardian of the pasture.</div>
+                </div>
+                <div class="carousel-slide">
+                  <img src="assets/images/surabhi/tulsi.jpg" alt="Tulsi — Soft eyes, steady heart." loading="lazy" decoding="async" />
+                  <div class="carousel-caption">Tulsi — Soft eyes, steady heart.</div>
+                </div>
+                <div class="carousel-slide">
+                  <img src="assets/images/surabhi/tungi.jpg" alt="Tungi — Curious and kind." loading="lazy" decoding="async" />
+                  <div class="carousel-caption">Tungi — Curious and kind.</div>
+                </div>
+                <div class="carousel-slide">
+                  <img src="assets/images/surabhi/vaudev.jpg" alt="Vaudev — Majestic and calm." loading="lazy" decoding="async" />
+                  <div class="carousel-caption">Vaudev — Majestic and calm.</div>
+                </div>
+                <div class="carousel-slide">
+                  <img src="assets/images/surabhi/yamuna.jpg" alt="Yamuna — Graceful spirit of the goshala." loading="lazy" decoding="async" />
+                  <div class="carousel-caption">Yamuna — Graceful spirit of the goshala.</div>
+                </div>
+                <div class="carousel-slide">
+                  <img src="assets/images/surabhi/kumkum.jpg" alt="Kumkum — Joyful and bright." loading="lazy" decoding="async" />
+                  <div class="carousel-caption">Kumkum — Joyful and bright.</div>
+                </div>
+                <div class="carousel-slide">
+                  <img src="assets/images/surabhi/pradyumna.jpg" alt="Pradyumna — Brave and resilient." loading="lazy" decoding="async" />
+                  <div class="carousel-caption">Pradyumna — Brave and resilient.</div>
+                </div>
+                <div class="carousel-slide">
+                  <img src="assets/images/surabhi/hamsi.jpg" alt="Hamsi — Nurturing and loving." loading="lazy" decoding="async" />
+                  <div class="carousel-caption">Hamsi — Nurturing and loving.</div>
+                </div>
+              </div>
+            </div>
+            <button class="carousel-btn carousel-prev" data-carousel-prev aria-label="Previous">‹</button>
+            <button class="carousel-btn carousel-next" data-carousel-next aria-label="Next">›</button>
+            <div class="carousel-dots" data-carousel-dots></div>
           </div>
         </div>
       </section>
@@ -150,11 +340,11 @@
             <p class="stack-6">
               <a href="mailto:hello@goshala.example">hello@goshala.example</a>
               <a href="tel:+911234567890">+91 12345 67890</a>
-              <a href="contact.html">Contact form</a>
+              <a href="contact.html">Contact page</a>
             </p>
           </div>
         </div>
-        <p class="copyright">© <span data-year></span> Goshala. All rights reserved.</p>
+        <p class="copyright">© <span data-year></span> Surabhi Goshala. All rights reserved.</p>
       </div>
     </footer>
 
