@@ -178,3 +178,97 @@
     window.addEventListener('scroll', onScroll, { passive:true });
   }
 })();
+
+
+document.querySelectorAll('.triangle-board').forEach(board => {
+  const vertices = board.querySelectorAll('.vertex');
+
+  function closeAll() {
+    board.querySelectorAll('.popup').forEach(p => p.removeAttribute('data-open'));
+    vertices.forEach(v=>v.setAttribute('aria-expanded','false'));
+  }
+
+  vertices.forEach(v => {
+    v.addEventListener('click', e => {
+      const id = v.dataset.popup;
+      const popup = board.querySelector('#' + id);
+      const isOpen = popup.getAttribute('data-open') === 'true';
+      closeAll();
+      if (!isOpen) {
+        popup.setAttribute('data-open', 'true');
+        v.setAttribute('aria-expanded','true');
+        const vb = board.getBoundingClientRect();
+        const vx = (parseFloat(v.style.getPropertyValue('--vx')) / 200) * vb.width;
+        const vy = (parseFloat(v.style.getPropertyValue('--vy')) / 180) * vb.height;
+        
+        // Calculate popup position relative to viewport
+        const popupLeft = vb.left + vx + 20;
+        const popupTop = vb.top + vy + 20;
+        
+        // Get popup dimensions after it's shown
+        popup.style.left = popupLeft + 'px';
+        popup.style.top = popupTop + 'px';
+        
+        // Force a reflow to get actual popup dimensions
+        popup.offsetHeight;
+        const pb = popup.getBoundingClientRect();
+        
+        // Adjust position to stay within viewport
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        const margin = 16;
+        
+        let finalLeft = popupLeft;
+        let finalTop = popupTop;
+        
+        // Check right boundary
+        if (pb.right > viewportWidth - margin) {
+          finalLeft = viewportWidth - pb.width - margin;
+        }
+        
+        // Check left boundary
+        if (finalLeft < margin) {
+          finalLeft = margin;
+        }
+        
+        // Check bottom boundary
+        if (pb.bottom > viewportHeight - margin) {
+          finalTop = viewportHeight - pb.height - margin;
+        }
+        
+        // Check top boundary
+        if (finalTop < margin) {
+          finalTop = margin;
+        }
+        
+        popup.style.left = finalLeft + 'px';
+        popup.style.top = finalTop + 'px';
+      }
+    });
+  });
+
+  document.addEventListener('click', e => {
+    if (!board.contains(e.target)) closeAll();
+  });
+
+  board.addEventListener('keydown', e => {
+    if(e.key === 'Escape'){
+      closeAll();
+      vertices.forEach(v=>v.blur());
+    }
+  });
+
+  // Reposition popups on window resize
+  window.addEventListener('resize', () => {
+    const openPopup = board.querySelector('.popup[data-open="true"]');
+    if (openPopup) {
+      const activeVertex = board.querySelector('.vertex[aria-expanded="true"]');
+      if (activeVertex) {
+        // Trigger a reposition by simulating a click
+        activeVertex.click();
+      }
+    }
+  });
+});
+
+
