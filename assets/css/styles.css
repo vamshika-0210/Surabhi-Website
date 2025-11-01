@@ -201,7 +201,12 @@ section{padding:clamp(28px,4.5vw,48px) 0}
 .section-support{background:linear-gradient(180deg,rgba(222,247,229,0.45) 0%,rgba(255,255,255,0.9) 100%);}
 .support-grid{gap:18px;}
 .section-programs{background:#fff;}
-.programs-layout{display:grid;grid-template-columns:0.9fr 1.1fr;gap:clamp(24px,5vw,48px);align-items:start;}
+.programs-layout{
+  display:grid;
+  grid-template-columns: 1fr; /* <-- THIS IS THE CHANGE */
+  gap:clamp(24px,5vw,48px);
+  align-items:start;
+}
 .programs-intro{display:flex;flex-direction:column;gap:18px;}
 .programs-intro .btn-outline{align-self:flex-start;}
 .programs-grid{gap:18px;}
@@ -515,4 +520,425 @@ NEW Family Tree Image Section (Corrected)
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   border: 1px solid var(--color-border);
+}
+
+/* Centers the text inside the full-width info box */
+.immersive-card .container {
+    text-align: center;
+}
+
+/* Utility class to reduce space between bullet points */
+.compact-list li {
+  margin-bottom: 0.25rem; /* Reduces space below each item. Adjust '0.25rem' as you like */
+  padding-bottom: 0;
+}
+
+/* --- Hero List & Spacing Adjustments --- */
+
+/* 1. Reduces the space *after* the h1 tags in this specific section */
+.page-hero h1 {
+  margin-bottom: 1rem; /* Adjust '1rem' as needed */
+}
+
+/* 2. Increases the font size of your list items in this section */
+.page-hero .compact-list li {
+  font-size: var(--normal-font-size); /* Uses your site's standard 'normal' font size */
+  line-height: 1.6; /* Adds a little space between lines for readability */
+}
+
+/* 3. Ensures the list doesn't have extra space *before* it */
+.page-hero .compact-list {
+  margin-top: 0;
+}
+
+/* --- CTA Button Alignment (Fix) --- */
+
+/* 1. Removes background, padding, border, and shadow */
+.cta-band {
+  background: none;
+  padding: 0;
+  margin-bottom: 2rem; /* Adds some space below the button */
+  border: none;
+  box-shadow: none;
+}
+
+/* 2. Aligns the button container to the left */
+.cta-band-actions {
+  text-align: left;
+}
+
+/* --- Mission Objectives Redesign --- */
+
+/* 1. Reset the parent container and set up the CSS counter */
+.mission-objectives {
+  /* This removes any old background you might have had */
+  background: none; 
+  border: none;
+  box-shadow: none;
+  
+  /* This 'counter' is used to number the items automatically */
+  counter-reset: objective-counter; 
+}
+
+/* 2. Style the heading (optional, but good for consistency) */
+.mission-objectives h3 {
+  text-align: center;
+  margin-bottom: var(--mb-2-5);
+}
+
+/* 3. Create the 3-column grid for the list */
+.objective-list {
+  display: grid;
+  grid-template-columns: 1fr; /* 1 column on mobile */
+  gap: 2rem;
+}
+
+/* 4. Style the individual items (THIS IS THE MAIN FIX) */
+.objective-item {
+  /* REMOVE THE OLD BOX-BOX LOOK */
+  background: none; 
+  border: none;
+  padding: 0;
+  
+  /* Set up for the styled number */
+  position: relative;
+  padding-left: 5.5rem; /* Makes space for the big number */
+  min-height: 80px; /* Ensures items align even if text is short */
+}
+
+/* 5. Create the new, styled numbers */
+.objective-item::before {
+  /* Get the number from our counter */
+  counter-increment: objective-counter;
+  content: "0" counter(objective-counter) ; 
+
+  /* Styling the number */
+  position: absolute;
+  left: 0;
+  top: -10px; /* Adjust as needed */
+  font-size: 3rem; /* Big number! */
+  font-weight: var(--font-semi-bold);
+  color: var(--first-color-lighter); /* Use your site's accent color */
+  line-height: 1;
+}
+
+/* 6. Style the item's text */
+.objective-item h4 {
+  color: var(--title-color);
+  font-size: var(--h3-font-size);
+  margin-bottom: var(--mb-0-5);
+}
+
+.objective-item p {
+  color: var(--text-color);
+}
+
+
+/* 7. On larger screens, switch to 3 columns */
+@media screen and (min-width: 768px) {
+  .objective-list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+  }
+  
+  .objective-item {
+    /* On desktop, put the number on top */
+    padding-left: 0;
+    padding-top: 4rem; /* Makes space for the number above */
+    text-align: center;
+  }
+  
+  .objective-item::before {
+    top: 0;
+    left: 50%; /* Center the number */
+    transform: translateX(-50%);
+  }
+}
+
+/* --- Vision Projects Redesign (Single Column) --- */
+
+.vision-content {
+    /* This will be our counter parent */
+    counter-reset: project-counter;
+}
+
+.vision-projects {
+    margin-top: 2rem; /* Space above the list */
+}
+
+/* 1. Style the individual project items */
+.project-item {
+    /* Remove any old boxy styles */
+    background: none;
+    border: none;
+    padding: 0;
+    
+    /* Set up for the styled number */
+    position: relative;
+    padding-left: 5.5rem; /* Makes space for the big number */
+    min-height: 80px; /* Ensures items align */
+    margin-bottom: 1.5rem; /* Space between each item */
+}
+
+/* 2. Remove space from the last item */
+.project-item:last-child {
+    margin-bottom: 0;
+}
+
+/* 3. Create the new, styled numbers */
+.project-item::before {
+    /* Get the number from our counter */
+    counter-increment: project-counter;
+    content: "0" counter(project-counter) ; 
+
+    /* Styling the number */
+    position: absolute;
+    left: 0;
+    top: -10px; /* Adjust as needed */
+    font-size: 4rem; /* Big number! */
+    font-weight: 600; /* Use a real value */
+    color: rgba(0, 0, 0, 0.35); /* Use a light green from your file */
+    line-height: 1;
+}
+
+/* 4. Style the item's text (THIS IS THE KEY FIX) */
+.project-item h2 { /* <-- Correctly targets H2 now */
+    color: #1f4d2a;                 /* Value from your original file */
+    font-size: 1.1rem;             /* Value from your original file */
+    font-weight: 600;              /* Value from your original file */
+    margin: 0 0 8px 0;             /* The small margin we wanted */
+}
+
+.project-item p {
+    color: #475a4e;                 /* Value from your original file */
+    font-size: 0.95rem;            /* Value from your original file */
+    line-height: 1.5;
+    margin-top: 0;                 /* Ensures no extra top margin */
+}
+
+/* --- Fix for CTA Band inside a Panel --- */
+/* This cleans up the button bar inside the white panel */
+.card-panel .cta-band {
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 1.5rem 0 0 0; /* Add space above it */
+    margin-top: 2rem;
+    border-top: 1px solid rgba(46, 125, 50, 0.12); /* Light separator line */
+}
+
+.card-panel .cta-band-actions {
+    text-align: left; /* Keep buttons to the left */
+}
+
+/* Makes the text stack above the buttons */
+.card-panel .cta-band strong {
+    text-align: left;
+    display: block; 
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+/* Makes the contact links in the .lead paragraph black */
+.lead a {
+  color: #111827; /* This is your site's main "black" text color */
+  text-decoration: none; /* Removes the underline */
+}
+
+/* Optional: Add an underline on hover */
+.lead a:hover {
+  text-decoration: underline;
+  color: var(--color-primary); /* Uses your site's main green color on hover */
+}
+
+/* --- New Program List Design --- */
+
+/* This replaces the old 3-column grid */
+.program-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: #ffffff;
+  padding: 1.5rem;
+  box-shadow: 0 8px 16px rgba(16, 45, 24, 0.05);
+
+  /* --- ADD THESE 3 LINES --- */
+  max-width: 600px; /* Or any width you like */
+  margin-left: auto;
+  margin-right: auto;
+}
+.program-item {
+  display: flex;
+  align-items: flex-start; /* Aligns icon and text nicely */
+  gap: 1rem;
+  
+  /* Add a separator line for all but the last item */
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.program-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.program-icon {
+  flex-shrink: 0; /* Prevents icon from shrinking */
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(46, 125, 50, 0.1); /* Light green bg */
+  border: 1px solid rgba(46, 125, 50, 0.15);
+}
+
+/* Style the SVG icon */
+.program-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--color-primary); /* Use your site's main green */
+}
+
+.program-text h3 {
+  margin: 0 0 4px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f4d2a; /* Color from your CSS file */
+}
+
+.program-text p {
+  margin: 0;
+  color: #475a4e; /* Color from your CSS file */
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* This overrides the old card styling in this section on mobile */
+@media (max-width: 900px) {
+  .programs-grid .card {
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+}
+/* --- New "Our Programs" Section Styling --- */
+
+/* 1. Centers the Intro Text and Button */
+.programs-intro {
+  text-align: center;
+}
+.programs-intro .btn-outline {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 2. Styles the New Program List */
+.program-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: #ffffff;
+  padding: 1.5rem;
+  box-shadow: 0 8px 16px rgba(16, 45, 24, 0.05);
+
+  /* This centers the list and stops it from being full-width */
+  max-width: 600px; 
+  width: 100%; /* Ensures it's responsive on mobile */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.program-item {
+  display: flex;
+  align-items: flex-start; 
+  gap: 1rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.program-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.program-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(46, 125, 50, 0.1); 
+  border: 1px solid rgba(46, 125, 50, 0.15);
+}
+
+.program-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--color-primary); 
+}
+
+.program-text h3 {
+  margin: 0 0 4px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f4d2a;
+}
+
+.program-text p {
+  margin: 0;
+  color: #475a4e;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* --- Aligned Team List --- */
+
+.team-list-aligned {
+  display: grid;
+  
+  /* This creates two columns: 
+     1. 'auto' makes the name column just wide enough for the names.
+     2. '1fr' makes the designation column take the rest of the space.
+  */
+  grid-template-columns: auto 1fr;
+  
+  /* This adds space between rows and columns */
+  gap: 0.5rem 1.5rem; 
+  
+  align-items: baseline; /* Aligns the text on the same line */
+}
+
+.team-list-aligned strong {
+  /* This styles the Name column */
+  font-weight: 600; /* Keeps it bold */
+  text-align: left;
+}
+
+.team-list-aligned span {
+  /* This styles the Designation column */
+  text-align: left;
+}
+/* Make the container div responsive and give it a height.
+  The green background is coming from this element.
+*/
+.contact-map {
+  width: 100%;     /* Make it fill the page width, for example */
+  height: 450px;    /* Give it a specific height. Adjust this value as you like! */
+  
+  /* If you want to keep the green background for loading: */
+  /* background-color: #e6f0e6; */ 
+}
+
+/* This is the key:
+  Tell the iframe to fill its parent container (.contact-map)
+*/
+.contact-map iframe {
+  width: 100%;
+  height: 100%;
+  border: 0; /* Good to keep this here */
 }
