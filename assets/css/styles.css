@@ -188,6 +188,10 @@ section{padding:clamp(28px,4.5vw,48px) 0}
 @media (max-width: 1100px){.grid-4{grid-template-columns:repeat(2,1fr)}}
 @media (max-width: 900px){
 
+  html {
+    font-size: 16px; /* Makes all text smaller on phones */
+  }
+
   /* Stacks all general 2 and 3-column grids */
   .grid-3,
   .grid-2 {
@@ -224,6 +228,21 @@ section{padding:clamp(28px,4.5vw,48px) 0}
   }
   .programs-intro .btn-outline {
     width: 100%;
+  }
+  .immersive-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .mission-grid {
+    grid-template-columns: 1fr;
+  }
+  .contact-layout {
+    grid-template-columns: 1fr;
+  }
+  .contact-map {
+    min-height: 300px;
+  }
+  .cta-band {
+    align-items: flex-start;
   }
 }
 @media (max-width: 720px){
@@ -1027,6 +1046,36 @@ FIX: Mobile Responsive Stacking
   .footer .cols {
     grid-template-columns: 1fr;
     gap: 24px;
+  }
+  /* --- Other rules this block had --- */
+  .hero-content {
+    align-items: flex-end;
+    padding: calc(var(--header-h) + 12px) 16px clamp(52px, 18vh, 120px);
+  }
+  .hero-strip {
+    padding: 20px 18px;
+  }
+  .hero-strip-text {
+    max-width: 100%;
+  }
+  .hero-actions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .hero-actions .btn {
+    width: 100%;
+  }
+  .hero-hint {
+    bottom: 18px;
+    font-size: 0.8rem;
+  }
+  .carousel-slide {
+    padding: clamp(12px, 6vw, 20px);
+  }
+  .carousel-caption {
+    left: 16px;
+    bottom: 16px;
   }
 
 }
