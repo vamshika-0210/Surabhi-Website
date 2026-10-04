@@ -245,8 +245,8 @@ function start() {
     box(5.5, 1.2, 5.5, C.cream, 0, 15.6, 0);
     world.add(GEO.cone8, C.gold, mat([0, 19.4, 0], [0, 0, 0], [3.1, 6.6, 3.1]));
     world.add(GEO.ico0, C.gold, mat([0, 23.1, 0], [0, 0, 0], [0.8, 0.8, 0.8]), 0);
-    cyl(0.07, 3, 0x5d3b1e, 0, 24.7, 0, 6);
-    box(1.6, 1, 0.08, 0xff8a1f, 0.9, 25.6, 0, 0, 0);
+    cyl(0.09, 5.2, 0x5d3b1e, 0, 25.7, 0, 6);
+    world.add(GEO.ico0, C.gold, mat([0, 28.4, 0], [0, 0, 0], [0.22, 0.22, 0.22]), 0); // finial
     // low garden wall
     box(38, 0.7, 4.8, C.cream, 0, 0.6, 12.2, 0, 0.02);
     box(37, 0.5, 4.2, C.grass2, 0, 1.0, 12.2);
@@ -361,6 +361,40 @@ function start() {
         transformed.x += sin(uTime * 1.1 + ip.x * 0.35 + ip.z * 0.2) * 0.22 * sway;
         transformed.z += cos(uTime * 0.85 + ip.z * 0.3 + ip.x * 0.1) * 0.16 * sway;`);
   };
+
+  // ----------------------------------------------------------- temple flag (waves in the wind)
+  (function flag() {
+    const LEN = 3.6, HGT = 2.3;
+    const g = new THREE.PlaneGeometry(LEN, HGT, 18, 6);
+    g.translate(LEN / 2, 0, 0); // pin the left edge to x = 0 (the pole)
+    const pos = g.attributes.position;
+    for (let i = 0; i < pos.count; i++) { // taper into a pennant
+      const u = pos.getX(i) / LEN;
+      pos.setY(i, pos.getY(i) * (1 - 0.82 * u));
+    }
+    g.computeVertexNormals();
+    const m = new THREE.MeshLambertMaterial({ color: 0xff8a1f, side: THREE.DoubleSide });
+    m.onBeforeCompile = (shader) => {
+      shader.uniforms.uTime = timeUniform;
+      shader.vertexShader = shader.vertexShader
+        .replace('#include <common>', '#include <common>\nuniform float uTime;\nvarying float vWave;')
+        .replace('#include <begin_vertex>', `#include <begin_vertex>
+          float u = position.x / ${LEN.toFixed(1)};
+          float amp = 0.10 + u * u * 0.85;
+          float w = sin(uTime * 4.2 - position.x * 2.6) + 0.45 * sin(uTime * 7.3 - position.x * 4.1 + 1.7);
+          transformed.z += w * amp * 0.5;
+          transformed.y += sin(uTime * 2.1 - position.x * 1.4) * amp * 0.22 - u * u * 0.28;
+          transformed.x -= abs(w) * amp * 0.08;
+          vWave = w * u;`);
+      shader.fragmentShader = shader.fragmentShader
+        .replace('#include <common>', '#include <common>\nvarying float vWave;')
+        .replace('#include <color_fragment>', '#include <color_fragment>\n          diffuseColor.rgb *= 1.0 + vWave * 0.22;');
+    };
+    const mesh = new THREE.Mesh(g, m);
+    mesh.position.set(0.1, 26.9, 0);
+    mesh.frustumCulled = false;
+    scene.add(mesh);
+  })();
 
   const treeSpots = [];
   (function placeTrees() {
