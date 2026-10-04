@@ -39,9 +39,10 @@ function detectTier() {
 }
 
 const TIERS = {
-  high:   { dpr: 2,    antialias: true,  shadows: 2048, trees: 54, clouds: 7 },
-  medium: { dpr: 1.5,  antialias: false, shadows: 0,    trees: 36,  clouds: 5 },
-  low:    { dpr: 1.0,  antialias: false, shadows: 0,    trees: 22,   clouds: 3 }
+  // dpr = sharpness cap. The scene is only ~10 draw calls, so phones can afford full native resolution.
+  high:   { dpr: 2,    floor: 1.25, pixels: 5.0e6, antialias: true, shadows: 2048, trees: 54, clouds: 7 },
+  medium: { dpr: 3,    floor: 1.5,  pixels: 3.4e6, antialias: true, shadows: 0,    trees: 36, clouds: 5 },
+  low:    { dpr: 2,    floor: 1.0,  pixels: 2.0e6, antialias: true, shadows: 0,    trees: 22, clouds: 3 }
 };
 
 function start() {
@@ -67,7 +68,9 @@ function start() {
     console.warn('WebGL unavailable, using poster image.', err);
     return;
   }
-  let pixelRatio = Math.min(window.devicePixelRatio || 1, tier.dpr);
+  const cssW = Math.max(1, host.clientWidth || window.innerWidth), cssH = Math.max(1, host.clientHeight || window.innerHeight);
+  let pixelRatio = Math.min(window.devicePixelRatio || 1, tier.dpr, Math.sqrt(tier.pixels / (cssW * cssH)));
+  pixelRatio = Math.max(pixelRatio, Math.min(tier.floor, window.devicePixelRatio || 1));
   renderer.setPixelRatio(pixelRatio);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -742,12 +745,13 @@ function start() {
 
     if (!readyShown) { readyShown = true; host.classList.add('is-ready'); window.__goshalaReadyAt = Math.round(performance.now()); }
 
-    // adaptive resolution: if the device cannot hold ~40fps, step the pixel ratio down
+    // adaptive resolution. Only reacts to genuinely slow frames (<~20fps): iOS Low Power Mode and
+    // battery savers cap rAF at 30fps, which is NOT a reason to blur the scene. Never drops below the tier floor.
     if (now && lastTime) {
       const ms = now - lastTime;
-      if (ms > 28) { slowFrames++; goodFrames = 0; } else { goodFrames++; slowFrames = Math.max(0, slowFrames - 1); }
-      if (slowFrames > 25 && pixelRatio > 0.8) {
-        pixelRatio = Math.max(0.75, pixelRatio - 0.25);
+      if (ms > 50 && ms < 400) { slowFrames++; } else { slowFrames = Math.max(0, slowFrames - 1); }
+      if (slowFrames > 40 && pixelRatio > tier.floor + 0.01) {
+        pixelRatio = Math.max(tier.floor, pixelRatio - 0.25);
         renderer.setPixelRatio(pixelRatio); renderer.setSize(sizeInfo.w, sizeInfo.h, false);
         slowFrames = 0;
       }

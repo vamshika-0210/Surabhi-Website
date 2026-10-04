@@ -700,7 +700,7 @@ body.nav-open{overflow:hidden;}
 
 /* ------------------------------ Hero (live 3D scene) ------------------------------ */
 .hero-full{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;background:radial-gradient(900px 520px at 50% 38%,#1d4a2b 0%,#0e2a17 72%);overflow:hidden;isolation:isolate;padding:0;}
-.hero-visual{position:absolute;inset:0;z-index:1;opacity:0;transition:opacity .9s var(--ease);background:none;}
+.hero-visual{position:absolute;inset:0;z-index:1;opacity:0;transition:opacity .5s var(--ease);background:none;}
 .hero-visual.is-ready{opacity:1;}
 #goshala-3d{width:100%;height:100%;display:block;cursor:grab;touch-action:pan-y;outline-offset:-4px;}
 .hero-visual.is-dragging #goshala-3d{cursor:grabbing;}

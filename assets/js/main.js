@@ -112,11 +112,16 @@
         if(img && img.loading !== 'eager'){ img.loading = 'eager'; }
       }
     };
-    warm(0);
+    // Start fetching neighbours only once the gallery is near the screen, so the 3D scene gets the bandwidth first.
+    let near = false;
+    if('IntersectionObserver' in window){
+      const nio = new IntersectionObserver((e)=>{ if(e[0].isIntersecting){ near = true; warm(current()); nio.disconnect(); } }, { rootMargin:'700px 0px' });
+      nio.observe(carousel);
+    }else{ near = true; warm(0); }
 
     function update(){
       const i = current();
-      warm(i);
+      if(near) warm(i);
       counter.textContent = `${i+1} / ${slides.length}`;
       if(prev) prev.disabled = track.scrollLeft <= 2;
       if(next) next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
