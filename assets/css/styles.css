@@ -566,201 +566,13 @@ NEW Family Tree Image Section (Corrected)
 
 /* 2. Increases the font size of your list items in this section */
 .page-hero .compact-list li {
-  font-size: var(--normal-font-size); /* Uses your site's standard 'normal' font size */
+  font-size: 1rem;
   line-height: 1.6; /* Adds a little space between lines for readability */
 }
 
 /* 3. Ensures the list doesn't have extra space *before* it */
 .page-hero .compact-list {
   margin-top: 0;
-}
-
-/* --- CTA Button Alignment (Fix) --- */
-
-/* 1. Removes background, padding, border, and shadow */
-.cta-band {
-  background: none;
-  padding: 0;
-  margin-bottom: 2rem; /* Adds some space below the button */
-  border: none;
-  box-shadow: none;
-}
-
-/* 2. Aligns the button container to the left */
-.cta-band-actions {
-  text-align: left;
-}
-
-/* --- Mission Objectives Redesign --- */
-
-/* 1. Reset the parent container and set up the CSS counter */
-.mission-objectives {
-  /* This removes any old background you might have had */
-  background: none; 
-  border: none;
-  box-shadow: none;
-  
-  /* This 'counter' is used to number the items automatically */
-  counter-reset: objective-counter; 
-}
-
-/* 2. Style the heading (optional, but good for consistency) */
-.mission-objectives h3 {
-  text-align: center;
-  margin-bottom: var(--mb-2-5);
-}
-
-/* 3. Create the 3-column grid for the list */
-.objective-list {
-  display: grid;
-  grid-template-columns: 1fr; /* 1 column on mobile */
-  gap: 2rem;
-}
-
-/* 4. Style the individual items (THIS IS THE MAIN FIX) */
-.objective-item {
-  /* REMOVE THE OLD BOX-BOX LOOK */
-  background: none; 
-  border: none;
-  padding: 0;
-  
-  /* Set up for the styled number */
-  position: relative;
-  padding-left: 5.5rem; /* Makes space for the big number */
-  min-height: 80px; /* Ensures items align even if text is short */
-}
-
-/* 5. Create the new, styled numbers */
-.objective-item::before {
-  /* Get the number from our counter */
-  counter-increment: objective-counter;
-  content: "0" counter(objective-counter) ; 
-
-  /* Styling the number */
-  position: absolute;
-  left: 0;
-  top: -10px; /* Adjust as needed */
-  font-size: 3rem; /* Big number! */
-  font-weight: var(--font-semi-bold);
-  color: var(--first-color-lighter); /* Use your site's accent color */
-  line-height: 1;
-}
-
-/* 6. Style the item's text */
-.objective-item h4 {
-  color: var(--title-color);
-  font-size: var(--h3-font-size);
-  margin-bottom: var(--mb-0-5);
-}
-
-.objective-item p {
-  color: var(--text-color);
-}
-
-
-/* 7. On larger screens, switch to 3 columns */
-@media screen and (min-width: 768px) {
-  .objective-list {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2.5rem;
-  }
-  
-  .objective-item {
-    /* On desktop, put the number on top */
-    padding-left: 0;
-    padding-top: 4rem; /* Makes space for the number above */
-    text-align: center;
-  }
-  
-  .objective-item::before {
-    top: 0;
-    left: 50%; /* Center the number */
-    transform: translateX(-50%);
-  }
-}
-
-/* --- Vision Projects Redesign (Single Column) --- */
-
-.vision-content {
-    /* This will be our counter parent */
-    counter-reset: project-counter;
-}
-
-.vision-projects {
-    margin-top: 2rem; /* Space above the list */
-}
-
-/* 1. Style the individual project items */
-.project-item {
-    /* Remove any old boxy styles */
-    background: none;
-    border: none;
-    padding: 0;
-    
-    /* Set up for the styled number */
-    position: relative;
-    padding-left: 5.5rem; /* Makes space for the big number */
-    min-height: 80px; /* Ensures items align */
-    margin-bottom: 1.5rem; /* Space between each item */
-}
-
-/* 2. Remove space from the last item */
-.project-item:last-child {
-    margin-bottom: 0;
-}
-
-/* 3. Create the new, styled numbers */
-.project-item::before {
-    /* Get the number from our counter */
-    counter-increment: project-counter;
-    content: "0" counter(project-counter) ; 
-
-    /* Styling the number */
-    position: absolute;
-    left: 0;
-    top: -10px; /* Adjust as needed */
-    font-size: 4rem; /* Big number! */
-    font-weight: 600; /* Use a real value */
-    color: rgba(0, 0, 0, 0.35); /* Use a light green from your file */
-    line-height: 1;
-}
-
-/* 4. Style the item's text (THIS IS THE KEY FIX) */
-.project-item h2 { /* <-- Correctly targets H2 now */
-    color: #1f4d2a;                 /* Value from your original file */
-    font-size: 1.1rem;             /* Value from your original file */
-    font-weight: 600;              /* Value from your original file */
-    margin: 0 0 8px 0;             /* The small margin we wanted */
-}
-
-.project-item p {
-    color: #475a4e;                 /* Value from your original file */
-    font-size: 0.95rem;            /* Value from your original file */
-    line-height: 1.5;
-    margin-top: 0;                 /* Ensures no extra top margin */
-}
-
-/* --- Fix for CTA Band inside a Panel --- */
-/* This cleans up the button bar inside the white panel */
-.card-panel .cta-band {
-    background: none;
-    border: none;
-    box-shadow: none;
-    padding: 1.5rem 0 0 0; /* Add space above it */
-    margin-top: 2rem;
-    border-top: 1px solid rgba(46, 125, 50, 0.12); /* Light separator line */
-}
-
-.card-panel .cta-band-actions {
-    text-align: left; /* Keep buttons to the left */
-}
-
-/* Makes the text stack above the buttons */
-.card-panel .cta-band strong {
-    text-align: left;
-    display: block; 
-    margin-bottom: 1rem;
-    line-height: 1.6;
 }
 
 /* Makes the contact links in the .lead paragraph black */
@@ -887,7 +699,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-0.012em
 body.nav-open{overflow:hidden;}
 
 /* ------------------------------ Hero (live 3D scene) ------------------------------ */
-.hero-full{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;background:linear-gradient(180deg,#a9d4f0 0%,#f3ddb8 38%,#7fbf6a 39%,#4d8f45 100%);overflow:hidden;isolation:isolate;padding:0;}
+.hero-full{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;background:radial-gradient(900px 520px at 50% 38%,#1d4a2b 0%,#0e2a17 72%);overflow:hidden;isolation:isolate;padding:0;}
 .hero-visual{position:absolute;inset:0;z-index:1;opacity:0;transition:opacity .9s var(--ease);background:none;}
 .hero-visual.is-ready{opacity:1;}
 #goshala-3d{width:100%;height:100%;display:block;cursor:grab;touch-action:pan-y;outline-offset:-4px;}
@@ -1175,3 +987,68 @@ input:focus,textarea:focus,select:focus{outline:0;border-color:var(--green);box-
 }
 .objective-item::before{position:static;inset:auto;transform:none;width:auto;height:auto;background:none;border:0;}
 .mission-objectives h3{margin-bottom:clamp(16px,3vw,26px);}
+
+/* ---------- Round of fixes from testing ---------- */
+/* spacing rhythm for section headings */
+.section-title{margin-bottom:clamp(20px,3vw,34px);}
+.section-desc{margin-bottom:clamp(22px,3vw,34px);}
+.section-support .card{padding:clamp(24px,3vw,32px);}
+.section-support .card::before{position:static;display:block;margin-bottom:10px;font-size:1.25rem;line-height:1;color:rgba(31,107,52,.5);}
+
+/* header: never wrap brand / buttons; thin out on mid widths */
+.brand span,.nav-links-list a,.nav-links-actions .btn{white-space:nowrap;}
+.brand{flex:0 0 auto;min-width:0;}
+@media (max-width:1100px) and (min-width:761px){
+  .nav-links-actions .btn-ghost{display:none;}
+  .nav-links{gap:14px;}
+  .nav-links-list{gap:6px;}
+  .nav-links-list a{padding:8px 10px;font-size:.92rem;}
+}
+@media (max-width:860px) and (min-width:761px){
+  .brand span{font-size:1rem;}
+  .nav-links-actions .btn{padding:10px 16px;}
+}
+
+/* mobile menu: solid panel anchored under the header, readable links */
+@media (max-width:760px){
+  .nav-links{position:absolute;top:calc(100% + 8px);left:0;right:0;background:#0e2a17;backdrop-filter:none;-webkit-backdrop-filter:none;max-height:calc(100vh - var(--header-h) - 28px);max-height:calc(100dvh - var(--header-h) - 28px);z-index:200;}
+  .header .nav-links-list a{color:#e9f5eb;background:rgba(255,255,255,.07);}
+  .header .nav-links-list a:hover{background:rgba(255,255,255,.14);}
+  .header .nav-links-list a[aria-current="page"]{background:rgba(245,186,39,.2);color:#ffe29a;}
+  .header .nav-links-actions .btn-ghost{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.3);}
+  .header .nav-links-actions .btn-primary{background:var(--saffron);color:#1a1f11;}
+  .nav{padding-inline:0;}
+}
+.card-panel .project-item h2{font-size:1.2rem;line-height:1.25;}
+.card-panel .vision-projects{grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));}
+
+/* ---------- Fixes from the audit ---------- */
+.hero-link{padding:12px 0;}
+.btn{text-align:center;}
+.page-eyebrow{border-radius:14px;line-height:1.45;}
+a[href^="tel:"],a[href^="mailto:"]{display:inline-block;padding-block:5px;}
+.contact-map iframe{display:block;height:100%;min-height:360px;}
+@media (max-width:520px){
+  .cta-band-actions{flex-direction:column;align-items:stretch;}
+  .cta-band-actions .btn{width:100%;min-width:0;}
+}
+a[href^="tel:"],a[href^="mailto:"]{padding-block:8px;}
+@media (max-width:420px){
+  .card-panel{padding:20px 18px;}
+  .page-about .card-panel,.page-donate .card-panel{padding:22px 18px;}
+  .cta-band{padding:20px 18px;}
+  .btn{padding-inline:16px;}
+  .container{padding-inline:20px;}
+}
+.sticky-donate.is-covered{transform:translateY(calc(100% + 48px));pointer-events:none;}
+
+/* short landscape screens (phones turned sideways) */
+@media (max-height:520px){
+  .hero-full{min-height:100svh;}
+  .hero-content{padding-top:calc(var(--header-h) + 6px);padding-bottom:16px;}
+  .hero-copy{gap:8px;}
+  .hero-copy h1{font-size:clamp(1.25rem,6.2vh,2rem);max-width:none;}
+  .hero-eyebrow,.hero-tour,.hero-hint{display:none;}
+  .hero-actions .btn-lg{padding:10px 20px;}
+  .hero-link{padding:6px 0;}
+}

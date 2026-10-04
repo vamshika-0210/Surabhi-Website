@@ -614,7 +614,7 @@ function start() {
     lastX = e.clientX; lastY = e.clientY; lastT = now;
     const k = 0.0058;
     rig.manualAz -= dx * k;
-    rig.velAz = (-dx * k) / (dt / 1000);
+    rig.velAz = clamp((-dx * k) / (dt / 1000), -2.2, 2.2); // capped so a hard flick cannot spin the scene
     if (!isTouch(e)) {
       rig.manualElev = clamp(rig.manualElev + dy * 0.004, -0.3, 0.45);
     }
@@ -681,7 +681,7 @@ function start() {
     // input inertia
     if (!dragging && Math.abs(rig.velAz) > 0.01) {
       rig.manualAz += rig.velAz * dt;
-      rig.velAz *= Math.pow(0.06, dt);
+      rig.velAz *= Math.pow(0.015, dt);
     } else if (!dragging) { rig.velAz = 0; }
     if (!reduceMotion && !dragging) rig.driftT += dt; // slow idle sway
     rig.drift = Math.sin(rig.driftT * 0.13) * 0.3;
@@ -706,7 +706,7 @@ function start() {
 
     renderer.render(scene, camera);
 
-    if (!readyShown) { readyShown = true; host.classList.add('is-ready'); }
+    if (!readyShown) { readyShown = true; host.classList.add('is-ready'); window.__goshalaReadyAt = Math.round(performance.now()); }
 
     // adaptive resolution: if the device cannot hold ~40fps, step the pixel ratio down
     if (now && lastTime) {
@@ -746,6 +746,6 @@ function start() {
   window.__goshala = { rig, camera, scrollP: () => scrollP, tier: tierName, trees: treeSpots.length, cows: herd.length, calls: () => renderer.info.render.calls, tris: () => renderer.info.render.triangles, pr: () => pixelRatio };
 }
 
-// avoid contending with first paint: start after the poster is on screen
+// start right after first paint (module scripts already run after the document is parsed)
 const go = () => { try { start(); } catch (err) { console.warn('Goshala 3D failed to start', err); } };
-if (document.readyState === 'complete') go(); else window.addEventListener('load', go, { once: true });
+requestAnimationFrame(() => requestAnimationFrame(go));

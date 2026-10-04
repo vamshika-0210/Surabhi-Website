@@ -42,16 +42,9 @@
   const header = document.querySelector('[data-header]');
   const hero = document.querySelector('.hero-full');
   if(header){
-    if(hero && 'IntersectionObserver' in window){
-      const io = new IntersectionObserver((entries)=>{
-        entries.forEach((entry)=> header.classList.toggle('is-solid', !entry.isIntersecting || entry.intersectionRatio < 0.88));
-      }, { threshold:[0, 0.88, 1] });
-      io.observe(hero);
-    }else{
-      const onScroll = ()=> header.classList.toggle('is-solid', window.scrollY > 24);
-      onScroll();
-      window.addEventListener('scroll', onScroll, { passive:true });
-    }
+    const onScroll = ()=> header.classList.toggle('is-solid', window.scrollY > 40);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive:true });
   }
 
   // ---------- Scroll reveal (progressive enhancement: content is visible without JS)
@@ -153,6 +146,11 @@
     const upd = ()=> cta.classList.toggle('is-visible', window.scrollY > window.innerHeight * 0.7);
     upd();
     window.addEventListener('scroll', upd, { passive:true });
+    // tuck the button away while the footer (which has its own contact details) is on screen
+    const foot = document.querySelector('.footer');
+    if(foot && 'IntersectionObserver' in window){
+      new IntersectionObserver((e)=> cta.classList.toggle('is-covered', e[0].isIntersecting)).observe(foot);
+    }
   }
 
   // ---------- 3D tour hooks (hero chips + "See it in 3D" buttons)
