@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Surabhi Gir Goshala | Care, Compassion, Community</title>
     <meta name="description" content="A caring goshala providing shelter, food, and medical care for cows. Join us to donate, volunteer, or sponsor.">
-    <meta name="theme-color" content="#2e7d32" />
+    <meta name="theme-color" content="#0e2a17" />
     <meta property="og:title" content="Goshala | Care, Compassion, Community" />
     <meta property="og:description" content="Shelter and care for cows. Donate, volunteer, or sponsor." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="assets/images/logo.svg" />
     <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&display=swap"></noscript>
     <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="modulepreload" href="assets/vendor/three/three.module.js">
   </head>
   <body class="landing">
-    <noscript>
-      <style>
-        .mobile-hero-hidden{opacity:1 !important;transform:none !important;pointer-events:auto !important;}
-      </style>
-    </noscript>
-    <header class="header mobile-hero-hidden" data-header>
+    <header class="header" data-header>
       <div class="container nav" role="navigation" aria-label="Primary">
         <a class="brand" href="index.html">
           <img src="assets/images/logo.svg" alt="Surabhi Goshala logo" width="100" height="100" />
@@ -46,20 +46,24 @@
 
     <main>
       <section class="hero hero-full" aria-labelledby="hero-title">
-        <div id="goshala-360" class="hero-visual" aria-hidden="true">
-          <canvas id="goshala-3d" aria-label="Interactive 3D view of the Goshala"></canvas>
-          <div class="hero-visual-filter" data-immersive-filter></div>
+        <div id="goshala-360" class="hero-visual">
+          <canvas id="goshala-3d" tabindex="0" role="img" aria-label="Interactive 3D model of Surabhi Gir Goshala. Drag left or right to look around."></canvas>
         </div>
-        <div class="hero-mobile-poster" aria-hidden="true"></div>
-        <div class="hero-content mobile-hero-hidden" data-hero-content>
-          <div class="hero-strip container">
-            <div class="hero-strip-text">
-              <span class="hero-eyebrow" style="font-size: 1.1rem;">Serve Cow to Save Yourself</span>
-              <h3 id="hero-title">DEDICATED TO GOMAATA SEVA, ANNADANA&nbsp;SEVA & HARI NAAMA SEVA</h3>
-            </div>
+        <div class="hero-scrim" aria-hidden="true"></div>
+        <div class="hero-content" data-hero-content>
+          <div class="hero-copy container">
+            <span class="hero-eyebrow">Serve Cow to Save Yourself</span>
+            <h1 id="hero-title">DEDICATED TO <em>GOMAATA SEVA</em>, ANNADANA&nbsp;SEVA &amp; HARI NAAMA SEVA</h1>
             <div class="hero-actions">
-              <a class="btn btn-primary" href="donate.html">Donate Now</a>
+              <a class="btn btn-primary btn-lg" href="donate.html">Donate Now</a>
               <a class="hero-link" href="about.html">See our impact</a>
+            </div>
+            <div class="hero-tour" role="group" aria-label="Tour the goshala in 3D">
+              <span class="hero-tour-label">Explore</span>
+              <button type="button" class="tour-chip is-active" data-focus="overview">Overview</button>
+              <button type="button" class="tour-chip" data-focus="temple">Temple</button>
+              <button type="button" class="tour-chip" data-focus="barn">Goshala</button>
+              <button type="button" class="tour-chip" data-focus="orchard">Orchard</button>
             </div>
           </div>
         </div>
@@ -77,7 +81,7 @@
             </header>
             
             <div class="experience-content">
-  <p class="lead" style="font-size: 1.1rem;">
+  <p class="lead">
     Survey No. 73, Raghunathpura Village, Thippasandra Hobli, Magadi Taluk, Ramanagar District, Karnataka State – 562131<br>
     Mob: <a href="tel:6364893668">6364893668</a> / <a href="tel:6364893669">6364893669</a> / <a href="tel:8951355804">8951355804</a><br>
     Email ID: <a href="mailto:surabhigomaata@gmail.com">surabhigomaata@gmail.com</a>
@@ -85,7 +89,7 @@
 </div>
 
             <div class="experience-content" >
-              <p class="lead" style="font-size: 1.2rem;">Welcome to Surabhi Gir Goshala, a divine place where love, service, and spirituality come together. We are devoted to protecting and serving Desi Gir cows, feeding the needy with pure sattvic meals, and spreading the holy vibration of the Lord’s names through Sankirtan and Bhajans. Every visitor is welcome to participate in our seva and experience peace and divine happiness.</p>
+              <p class="lead">Welcome to Surabhi Gir Goshala, a divine place where love, service, and spirituality come together. We are devoted to protecting and serving Desi Gir cows, feeding the needy with pure sattvic meals, and spreading the holy vibration of the Lord’s names through Sankirtan and Bhajans. Every visitor is welcome to participate in our seva and experience peace and divine happiness.</p>
             </div>
           </article>
         </div>
@@ -96,17 +100,17 @@
           <article class="immersive-card">
             <span class="immersive-label"><b>Kamadhenu Shrine</b></span>
             <h3>The heart of daily seva</h3>
-            <p style="font-size: 1.1rem;">Around the sanctum, caretakers gather for morning aarti and gentle grooming rituals that anchor our herd in calm devotion.</p>
+            <p>Around the sanctum, caretakers gather for morning aarti and gentle grooming rituals that anchor our herd in calm devotion.</p>
           </article>
           <article class="immersive-card">
             <span class="immersive-label"><b>Shelter &amp; Fodder Bay</b></span>
             <h3>Where care feels like home</h3>
-            <p style="font-size: 1.1rem;">Walk through airy sheds, mineral troughs, and feed storage to see how every donation keeps bedding fresh and bowls brimming.</p>
+            <p>Walk through airy sheds, mineral troughs, and feed storage to see how every donation keeps bedding fresh and bowls brimming.</p>
           </article>
           <article class="immersive-card">
             <span class="immersive-label"><b>Pasture Loop</b></span>
             <h3>Greens that heal</h3>
-            <p style="font-size: 1.1rem;">Follow the pathway encircling medicinal greens and mango trees that shade Saraswathi and friends during lazy afternoons.</p>
+            <p>Follow the pathway encircling medicinal greens and mango trees that shade Saraswathi and friends during lazy afternoons.</p>
           </article>
         </div>
       </section>
@@ -117,15 +121,15 @@
           <div class="grid grid-3 support-grid">
             <div class="card">
               <h3>Daily Feed</h3>
-              <p style="font-size: 1.2rem;">Fodder, hay, and nutrition for every cow in our care.</p>
+              <p>Fodder, hay, and nutrition for every cow in our care.</p>
             </div>
             <div class="card">
               <h3>Medical Care for Sacred Cows</h3>
-              <p style="font-size: 1.2rem;">Regular health checkups, vaccinations, and emergency treatment.</p>
+              <p>Regular health checkups, vaccinations, and emergency treatment.</p>
             </div>
             <div class="card">
               <h3>Shelter & Safety</h3>
-              <p style="font-size: 1.2rem;">Clean sheds, safe pastures, and compassionate caregivers.</p>
+              <p>Clean sheds, safe pastures, and compassionate caregivers.</p>
             </div>
           </div>
         </div>
@@ -134,7 +138,7 @@
       <section class="section section-gallery" id="gallery">
         <div class="container">
           <h2 class="section-title">Gallery - Life at Surabhi</h2>
-          <p class="section-desc" style="font-size: 1.1rem;">Take a slow stroll through moments captured around the goshala — the same scenes you can orbit inside the 3D walkthrough.</p>
+          <p class="section-desc">Take a slow stroll through moments captured around the goshala — the same scenes you can orbit inside the 3D walkthrough.</p>
           <div class="carousel" data-carousel>
             <div class="carousel-viewport">
               <div class="carousel-track" data-carousel-track>
@@ -252,7 +256,7 @@
     
     <div class="programs-intro">
       <h2 class="section-title">Our Programs</h2>
-      <p class="section-desc" style="font-size: 1.1rem;">From daily feeding to regular medical check-ups, your contributions power impactful programs that directly improve the lives of cows.</p>
+      <p class="section-desc">From daily feeding to regular medical check-ups, your contributions power impactful programs that directly improve the lives of cows.</p>
       <a class="btn btn-outline" href="about.html">Learn more about our work</a>
     </div>
     
@@ -292,7 +296,7 @@
       <section class="section section-involvement surface">
         <div class="container">
           <h2 class="section-title">Get Involved</h2>
-          <p class="section-desc" style="font-size: 1.1rem;">Your time, skills, or donations make a real difference.</p>
+          <p class="section-desc">Your time, skills, or donations make a real difference.</p>
           <div class="grid grid-3">
             <div class="card">
               <h3>Volunteer</h3>
@@ -343,21 +347,9 @@
     </footer>
 
     <script src="assets/js/main.js" defer></script>
-    <script async src="https://cdn.jsdelivr.net/npm/es-module-shims@1.9.0/dist/es-module-shims.min.js"></script>
     <script type="importmap">
-      {
-        "imports": {
-          "three": "/assets/vendor/three/three.module.js"
-        }
-      }
+      { "imports": { "three": "./assets/vendor/three/three.module.js" } }
     </script>
-    <script type="importmap-shim">
-      {
-        "imports": {
-          "three": "/assets/vendor/three/three.module.js"
-        }
-      }
-    </script>
-    <script type="module-shim" src="assets/js/goshala-3d.js"></script>
+    <script type="module" src="assets/js/goshala-3d.js"></script>
   </body>
   </html>

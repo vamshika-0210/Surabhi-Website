@@ -1,182 +1,149 @@
-// Small JS for navigation toggle and simple UX niceties
+// Site behaviour: navigation, header state, scroll reveals, gallery, 3D tour hooks, forms
 (function(){
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------- Navigation
   const navToggle = document.querySelector('[data-menu-toggle]');
   const navLinks = document.querySelector('[data-nav-links]');
   if(navToggle && navLinks){
     const menuLabel = navToggle.querySelector('.menu-toggle-label');
-    navToggle.addEventListener('click',()=>{
-      const open = navLinks.classList.toggle('open');
+    const setOpen = (open)=>{
+      navLinks.classList.toggle('open', open);
+      document.body.classList.toggle('nav-open', open);
       navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       if(menuLabel){ menuLabel.textContent = open ? 'Close' : 'Menu'; }
-    });
-    navLinks.querySelectorAll('a').forEach((link)=>{
-      link.addEventListener('click', ()=>{
-        if(navLinks.classList.contains('open')){
-          navLinks.classList.remove('open');
-          navToggle.setAttribute('aria-expanded','false');
-          if(menuLabel){ menuLabel.textContent = 'Menu'; }
-        }
-      });
-    });
-    const navDesktopQuery = window.matchMedia('(min-width: 761px)');
-    navDesktopQuery.addEventListener('change', (event)=>{
-      if(event.matches && navLinks.classList.contains('open')){
-        navLinks.classList.remove('open');
-        navToggle.setAttribute('aria-expanded','false');
-        if(menuLabel){ menuLabel.textContent = 'Menu'; }
-      }
-    });
+    };
+    navToggle.addEventListener('click', ()=> setOpen(!navLinks.classList.contains('open')));
+    navLinks.querySelectorAll('a').forEach((link)=> link.addEventListener('click', ()=> setOpen(false)));
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') setOpen(false); });
+    window.matchMedia('(min-width: 761px)').addEventListener('change', (e)=>{ if(e.matches) setOpen(false); });
   }
 
-  // Update footer year
+  // ---------- Footer year
   const y = document.querySelector('[data-year]');
   if(y){ y.textContent = String(new Date().getFullYear()); }
 
-  // Contact form handler (mailto fallback)
+  // ---------- Contact form (opens the visitor's mail app, addressed to the trust)
   const form = document.querySelector('[data-contact-form]');
   if(form){
     form.addEventListener('submit', (e)=>{
       e.preventDefault();
       const fd = new FormData(form);
-      const name = encodeURIComponent(fd.get('name')||'');
-      const email = encodeURIComponent(fd.get('email')||'');
-      const message = encodeURIComponent(fd.get('message')||'');
-      const subject = `Enquiry from ${decodeURIComponent(name) || 'Goshala Website'}`;
-      const body = `Name: ${decodeURIComponent(name)}%0AEmail: ${decodeURIComponent(email)}%0A%0A${decodeURIComponent(message)}`;
-      const mailto = `mailto:hello@goshala.example?subject=${encodeURIComponent(subject)}&body=${body}`;
-      window.location.href = mailto;
+      const name = String(fd.get('name') || '');
+      const email = String(fd.get('email') || '');
+      const message = String(fd.get('message') || '');
+      const subject = `Enquiry from ${name || 'Goshala Website'}`;
+      const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
+      window.location.href = `mailto:surabhigomaata@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     });
   }
 
-  // Simple Carousel
+  // ---------- Header: transparent over the hero, solid after it
+  const header = document.querySelector('[data-header]');
+  const hero = document.querySelector('.hero-full');
+  if(header){
+    if(hero && 'IntersectionObserver' in window){
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach((entry)=> header.classList.toggle('is-solid', !entry.isIntersecting || entry.intersectionRatio < 0.88));
+      }, { threshold:[0, 0.88, 1] });
+      io.observe(hero);
+    }else{
+      const onScroll = ()=> header.classList.toggle('is-solid', window.scrollY > 24);
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive:true });
+    }
+  }
+
+  // ---------- Scroll reveal (progressive enhancement: content is visible without JS)
+  const revealTargets = document.querySelectorAll([
+    '.section .section-title', '.section .section-desc', '.card', '.card-panel', '.immersive-card',
+    '.program-item', '.mini-card', '.mission-card', '.benefit-item', '.project-item', '.objective-item',
+    '.family-tree-container', '.family-tree-image-wrapper', '.timeline-item', '.cta-band', '.contact-map',
+    '.carousel', '.page-hero .container > *', '.invitation', '.donation-tier'
+  ].join(','));
+  if('IntersectionObserver' in window && !reduceMotion){
+    const rio = new IntersectionObserver((entries)=>{
+      entries.forEach((entry)=>{
+        if(entry.isIntersecting){ entry.target.classList.add('is-in'); rio.unobserve(entry.target); }
+      });
+    }, { rootMargin:'0px 0px -8% 0px', threshold:0.08 });
+    revealTargets.forEach((el, i)=>{
+      el.classList.add('reveal');
+      el.style.setProperty('--reveal-delay', `${(i % 3) * 70}ms`);
+      rio.observe(el);
+    });
+  }
+
+  // ---------- Gallery (native scroll-snap, buttons + dots enhance it)
   document.querySelectorAll('[data-carousel]').forEach((carousel)=>{
     const track = carousel.querySelector('[data-carousel-track]');
     const slides = Array.from(track.children);
     const prev = carousel.querySelector('[data-carousel-prev]');
     const next = carousel.querySelector('[data-carousel-next]');
     const dotsEl = carousel.querySelector('[data-carousel-dots]');
-    let index = 0;
-    let autoTimer;
+    track.tabIndex = 0;
+    track.setAttribute('role', 'region');
+    track.setAttribute('aria-label', 'Photo gallery, scroll horizontally');
 
-    // Decorative backdrop from image source
-    slides.forEach((slide)=>{
-      const img = slide.querySelector('img');
-      if(img){
-        const src = img.currentSrc || img.getAttribute('src');
-        if(src){ slide.style.setProperty('--photo', `url("${src}")`); }
-      }
-    });
+    const slideStep = ()=>{
+      const a = slides[0], b = slides[1];
+      return b ? b.offsetLeft - a.offsetLeft : a.offsetWidth;
+    };
+    const current = ()=> Math.round(track.scrollLeft / Math.max(1, slideStep()));
+    const goTo = (i)=> track.scrollTo({ left: Math.max(0, Math.min(slides.length-1, i)) * slideStep(), behavior: reduceMotion ? 'auto' : 'smooth' });
 
-    // Dots
-    slides.forEach((_,i)=>{
-      const b = document.createElement('button');
-      b.className = 'carousel-dot';
-      b.type = 'button';
-      b.setAttribute('aria-label', `Go to slide ${i+1}`);
-      b.addEventListener('click',()=>go(i));
-      dotsEl.appendChild(b);
-    });
-    const dots = Array.from(dotsEl.children);
+    // compact dots: show a rolling window so 25 photos do not overflow on phones
+    const counter = document.createElement('span');
+    counter.className = 'carousel-count';
+    counter.setAttribute('aria-live', 'polite');
+    dotsEl.appendChild(counter);
 
     function update(){
-      track.style.transform = `translateX(-${index*100}%)`;
-      dots.forEach((d,i)=>d.toggleAttribute('aria-current', i===index));
-      if(prev) prev.disabled = index===0;
-      if(next) next.disabled = index===slides.length-1;
+      const i = current();
+      counter.textContent = `${i+1} / ${slides.length}`;
+      if(prev) prev.disabled = track.scrollLeft <= 2;
+      if(next) next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
     }
-    function go(i){ index = Math.max(0, Math.min(slides.length-1, i)); update(); restartAuto(); }
-    function nextSlide(){ go(index+1 <= slides.length-1 ? index+1 : 0); }
-    function prevSlide(){ go(index-1 >= 0 ? index-1 : slides.length-1); }
-
-    prev?.addEventListener('click', prevSlide);
-    next?.addEventListener('click', nextSlide);
-
-    // Auto-play
-    function restartAuto(){
-      clearInterval(autoTimer);
-      autoTimer = setInterval(nextSlide, 6000);
-    }
-    restartAuto();
-
-    // Keyboard
-    carousel.addEventListener('keydown', (e)=>{
-      if(e.key==='ArrowRight'){ nextSlide(); }
-      if(e.key==='ArrowLeft'){ prevSlide(); }
+    let ticking = false;
+    track.addEventListener('scroll', ()=>{
+      if(ticking) return; ticking = true;
+      requestAnimationFrame(()=>{ ticking = false; update(); });
+    }, { passive:true });
+    prev?.addEventListener('click', ()=> goTo(current()-1));
+    next?.addEventListener('click', ()=> goTo(current()+1));
+    track.addEventListener('keydown', (e)=>{
+      if(e.key === 'ArrowRight'){ e.preventDefault(); goTo(current()+1); }
+      if(e.key === 'ArrowLeft'){ e.preventDefault(); goTo(current()-1); }
     });
-    carousel.tabIndex = 0;
-
-    // Touch swipe
-    let startX=0, dx=0;
-    track.addEventListener('touchstart',(e)=>{startX=e.touches[0].clientX;clearInterval(autoTimer);},{passive:true});
-    track.addEventListener('touchmove',(e)=>{dx=e.touches[0].clientX-startX;},{passive:true});
-    track.addEventListener('touchend',()=>{
-      if(Math.abs(dx)>40){ dx>0 ? prevSlide() : nextSlide(); }
-      dx=0; restartAuto();
-    });
-
+    window.addEventListener('resize', update, { passive:true });
     update();
   });
 
-  const header = document.querySelector('[data-header]');
-  const heroContent = document.querySelector('[data-hero-content]');
-  const mobileHeroEligible = !!(heroContent && header);
+  // ---------- Sticky donate button on phones (not on the donate page, not over the hero)
+  if(!/donate\.html$/.test(location.pathname)){
+    const cta = document.createElement('a');
+    cta.className = 'sticky-donate';
+    cta.href = 'donate.html';
+    cta.textContent = 'Donate';
+    document.body.appendChild(cta);
+    const upd = ()=> cta.classList.toggle('is-visible', window.scrollY > window.innerHeight * 0.7);
+    upd();
+    window.addEventListener('scroll', upd, { passive:true });
+  }
 
-  const mobileHeroQuery = window.matchMedia('(max-width: 760px)');
-  let mobileHeroRevealAttached = false;
-  function setMobileHeroHidden(hidden){
-    if(!mobileHeroEligible) return;
-    if(hidden){
-      if(!mobileHeroQuery.matches) return;
-      header.classList.add('mobile-hero-hidden');
-      heroContent.classList.add('mobile-hero-hidden');
-    }else{
-      header.classList.remove('mobile-hero-hidden');
-      heroContent.classList.remove('mobile-hero-hidden');
-    }
-  }
-  function onMobileHeroScroll(){
-    if(window.scrollY > window.innerHeight * 0.28){
-      setMobileHeroHidden(false);
-      window.removeEventListener('scroll', onMobileHeroScroll);
-      mobileHeroRevealAttached = false;
-    }
-  }
-  function applyMobileHeroMode(active){
-    if(!mobileHeroEligible) return;
-    if(active){
-      setMobileHeroHidden(true);
-      if(!mobileHeroRevealAttached){
-        window.addEventListener('scroll', onMobileHeroScroll, { passive:true });
-        mobileHeroRevealAttached = true;
-        onMobileHeroScroll();
-      }
-    }else{
-      setMobileHeroHidden(false);
-      if(mobileHeroRevealAttached){
-        window.removeEventListener('scroll', onMobileHeroScroll);
-        mobileHeroRevealAttached = false;
-      }
-    }
-  }
-  applyMobileHeroMode(mobileHeroQuery.matches);
-  mobileHeroQuery.addEventListener('change', (event)=>applyMobileHeroMode(event.matches));
-
-  // Header transparency toggle
-  const hero = document.querySelector('.hero-full');
-  if(header && hero && 'IntersectionObserver' in window){
-    const observer = new IntersectionObserver((entries)=>{
-      entries.forEach((entry)=>{
-        header.classList.toggle('is-solid', !entry.isIntersecting);
-      });
-    }, { rootMargin: `-${parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-h')||'60',10)+10}px 0px 0px 0px`, threshold:0 });
-    observer.observe(hero);
-  } else if(header){
-    const onScroll = ()=>{
-      header.classList.toggle('is-solid', window.scrollY > 24);
-    };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive:true });
-  }
+  // ---------- 3D tour hooks (hero chips + "See it in 3D" buttons)
+  const chips = document.querySelectorAll('.tour-chip');
+  const focus = (name)=>{
+    window.dispatchEvent(new CustomEvent('goshala:focus', { detail:{ name } }));
+    chips.forEach((c)=> c.classList.toggle('is-active', c.dataset.focus === name));
+  };
+  chips.forEach((chip)=> chip.addEventListener('click', ()=> focus(chip.dataset.focus)));
+  document.querySelectorAll('[data-focus-jump]').forEach((btn)=>{
+    btn.addEventListener('click', ()=>{
+      window.scrollTo({ top:0, behavior: reduceMotion ? 'auto' : 'smooth' });
+      setTimeout(()=> focus(btn.dataset.focusJump), reduceMotion ? 0 : 350);
+    });
+  });
 })();
 
 
