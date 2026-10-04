@@ -210,10 +210,10 @@ function start() {
   disc(46, C.grass3, 0, 0.22, 0);
   world.add(GEO.ring, C.path, mat([0, 0.26, 0], [0, 0, 0], [43, 1, 43]), 0.01);
   flat(9, 30, C.path, 0, 0.28, 24);
-  flat(34, 8, C.path, 30, 0.28, -6);
-  flat(18, 38, C.path, 48, 0.28, -6);
-  flat(26, 6, C.path, -20, 0.28, -8);
-  flat(22, 26, C.path, -34, 0.28, -10);
+  flat(34, 8, C.path, 40, 0.28, -6);
+  flat(18, 38, C.path, 60, 0.28, -6);
+  flat(34, 8, C.path, -40, 0.28, -6);
+  flat(22, 26, C.path, -60, 0.28, -6);
 
   // ----------------------------------------------------------- main hall (temple)
   (function hall() {
@@ -253,7 +253,7 @@ function start() {
   })();
 
   // ----------------------------------------------------------- long cow barn (east)
-  const barnBase = { p: [48, 0, -6], ry: Math.PI / 2 };
+  const barnBase = { p: [60, 0, -6], ry: -Math.PI / 2 }; // open side faces the temple
   (function barn() {
     const L = 44, W = 12;
     withBase(barnBase.p, barnBase.ry, () => {
@@ -272,13 +272,13 @@ function start() {
       gableRoof(L + 4, 10.4, 3.4, C.roofMetal, 0, 5.1, -2.6);
     });
     // hay stack beside the barn
-    world.add(GEO.cyl10, C.hay, mat([31, 1.1, 8], [0, 0, 0], [2, 2.2, 2]));
-    world.add(GEO.cyl10, C.hay, mat([34, 1.1, 10], [0, 0, 0], [2, 2.2, 2]));
+    world.add(GEO.cyl10, C.hay, mat([44, 1.1, 14], [0, 0, 0], [2, 2.2, 2]));
+    world.add(GEO.cyl10, C.hay, mat([47, 1.1, 16], [0, 0, 0], [2, 2.2, 2]));
   })();
 
   // ----------------------------------------------------------- staff house (west)
   (function staff() {
-    withBase([-34, 0, -10], THREE.MathUtils.degToRad(12), () => {
+    withBase([-60, 0, -6], 0, () => {
       box(20, 0.6, 16, C.cream, 0, 0.3, 0);
       box(16, 3.1, 11, C.plaster, 0, 2.15, 0);
       box(16.4, 0.4, 11.4, C.cream, 0, 3.8, 0);
@@ -322,7 +322,9 @@ function start() {
     const tex = new THREE.CanvasTexture(c);
     tex.colorSpace = THREE.SRGBColorSpace;
     tex.anisotropy = 4;
-    const m = new THREE.Mesh(new THREE.PlaneGeometry(10, 1.875), new THREE.MeshBasicMaterial({ map: tex }));
+    const wood = new THREE.MeshLambertMaterial({ color: 0xe9dcb4 });
+    const mats = [wood, wood, wood, wood, new THREE.MeshBasicMaterial({ map: tex }), wood]; // front shows the text, back is a plain blank board
+    const m = new THREE.Mesh(new THREE.BoxGeometry(10, 1.875, 0.25), mats);
     m.position.set(-10, 3.6, 31);
     m.scale.setScalar(0.8);
     scene.add(m);
@@ -365,8 +367,8 @@ function start() {
     const r = mulberry32(99);
     const blocked = (x, z) =>
       Math.hypot(x, z) < 46 ||
-      (Math.abs(x - 48) < 22 && Math.abs(z + 6) < 24) ||
-      (Math.abs(x + 34) < 16 && Math.abs(z + 10) < 14) ||
+      (Math.abs(x - 60) < 22 && Math.abs(z + 6) < 26) ||
+      (Math.abs(x + 60) < 22 && Math.abs(z + 6) < 20) ||
       (Math.abs(x) < 14 && z > 0 && z < 60);
     const free = (x, z, min) => treeSpots.every((t) => Math.hypot(t.x - x, t.z - z) > min);
     // orchard rows
@@ -441,7 +443,7 @@ function start() {
   });
   // pasture cows (wander slowly)
   [
-    [20, 30], [-28, 26], [38, 22], [-46, -22], [10, -40], [-14, 40], [58, 24], [-60, 6], [30, -44]
+    [20, 30], [-28, 26], [38, 22], [-46, -26], [10, -40], [-14, 40], [64, 28], [-64, 26], [30, -44]
   ].slice(0, tierName === 'low' ? 5 : 9).forEach(([x, z], i) => {
     herd.push({ x, z, cx: x, cz: z, rad: 3 + (i % 3) * 2, ang: i * 1.3, speed: 0.07 + (i % 4) * 0.02, heading: 0, mode: i % 3 === 0 ? 'idle' : 'walk', phase: i * 2.1, tint: 0.9 + (i % 4) * 0.06 });
   });
@@ -472,7 +474,7 @@ function start() {
     };
     treeSpots.forEach((t) => put(t.x + 1.5, t.z - 1, 9 * t.s, 9 * t.s));
     herd.forEach((c) => put(c.x, c.z, 5, 5));
-    put(0, 0, 66, 50); put(-34, -10, 30, 24); put(48, -6, 30, 62);
+    put(0, 0, 66, 50); put(-60, -6, 30, 24); put(60, -6, 30, 62);
     blobs.count = bi;
     blobs.instanceMatrix.needsUpdate = true;
     blobs.frustumCulled = false;
@@ -531,15 +533,15 @@ function start() {
 
   // ----------------------------------------------------------- camera rig
   const FOCUS = {
-    overview: { target: [0, 3, 2], radius: 1, az: 0.22, elev: 0 },
-    temple:   { target: [0, 7, 4], radius: 0.7, az: 0.3, elev: -0.1 },
-    barn:     { target: [46, 2, -4], radius: 0.62, az: 1.15, elev: 0.0 },
-    orchard:  { target: [-46, 3, 28], radius: 0.62, az: 0.35, elev: -0.05 }
+    overview: { target: [0, 3, 0], radius: 1, az: 0, elev: 0 },
+    temple:   { target: [0, 7, 4], radius: 0.7, az: 0, elev: -0.1 },
+    barn:     { target: [58, 2, -4], radius: 0.62, az: -1.0, elev: 0.0 },
+    orchard:  { target: [-46, 3, 28], radius: 0.62, az: 0.2, elev: -0.05 }
   };
   const rig = {
     target: new THREE.Vector3(0, 3, 2), tTarget: new THREE.Vector3(0, 3, 2),
-    az: 0.22, elev: 0.5, radius: 100, radiusMul: 1, tRadiusMul: 1,
-    tAzBase: 0.22, azBase: 0.22, tElevOff: 0, elevOff: 0,
+    az: 0, elev: 0.5, radius: 100, radiusMul: 1, tRadiusMul: 1,
+    tAzBase: 0, azBase: 0, tElevOff: 0, elevOff: 0,
     manualAz: 0, manualElev: 0, velAz: 0, velElev: 0, drift: 0, driftT: 0
   };
   let sizeInfo = { w: 1, h: 1, portrait: false };
@@ -547,8 +549,8 @@ function start() {
   function baseRadius() {
     const a = sizeInfo.w / sizeInfo.h;
     const half = Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
-    if (a >= 1) return clamp(68 / (half * Math.min(a, 1.9)), 100, 140);
-    return clamp(42 / (half * a), 96, 225);
+    if (a >= 1) return clamp(84 / (half * Math.min(a, 1.9)), 112, 165);
+    return clamp(46 / (half * a), 104, 235);
   }
   function applyFocus(name) {
     const f = FOCUS[name] || FOCUS.overview;
@@ -584,7 +586,7 @@ function start() {
     camera.fov = sizeInfo.portrait ? 50 : 44;
     // lift the scene above the text card in portrait / mid-size
     const wide = w / h > 1.25;
-    camera.setViewOffset(w, h, wide ? -w * 0.15 : 0, sizeInfo.portrait ? h * 0.2 : h * 0.06, w, h);
+    camera.setViewOffset(w, h, 0, sizeInfo.portrait ? h * 0.2 : (wide ? h * 0.17 : h * 0.1), w, h); // centred, symmetric; lifted above the copy
     camera.updateProjectionMatrix();
     rig.radius = baseRadius();
     wake();
@@ -682,7 +684,7 @@ function start() {
       rig.velAz *= Math.pow(0.06, dt);
     } else if (!dragging) { rig.velAz = 0; }
     if (!reduceMotion && !dragging) rig.driftT += dt; // slow idle sway
-    rig.drift = Math.sin(rig.driftT * 0.13) * 0.42;
+    rig.drift = Math.sin(rig.driftT * 0.13) * 0.3;
 
     // ease toward focus preset
     const s = 1 - Math.exp(-dt * 3.2);
@@ -692,11 +694,11 @@ function start() {
     rig.elevOff = lerp(rig.elevOff, rig.tElevOff, s);
 
     const p = easeInOut(scrollP);
-    rig.az = rig.azBase + rig.manualAz + rig.drift + p * 1.1 + lerp(-0.9, 0, ie);
-    rig.elev = baseElev() + rig.elevOff + rig.manualElev + p * 0.12 + lerp(0.32, 0, ie);
+    rig.az = rig.azBase + rig.manualAz + rig.drift + lerp(-0.9, 0, ie);
+    rig.elev = baseElev() + rig.elevOff + rig.manualElev + lerp(0.32, 0, ie);
     rig.radius = baseRadius();
     const savedMul = rig.radiusMul;
-    rig.radiusMul = savedMul * lerp(1.55, 1, ie) * (1 - p * 0.12);
+    rig.radiusMul = savedMul * lerp(1.55, 1, ie);
     placeCamera();
     rig.radiusMul = savedMul;
 

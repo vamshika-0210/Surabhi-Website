@@ -61,17 +61,31 @@
     '.family-tree-container', '.family-tree-image-wrapper', '.timeline-item', '.cta-band', '.contact-map',
     '.carousel', '.page-hero .container > *', '.invitation', '.donation-tier'
   ].join(','));
-  if('IntersectionObserver' in window && !reduceMotion){
-    const rio = new IntersectionObserver((entries)=>{
-      entries.forEach((entry)=>{
-        if(entry.isIntersecting){ entry.target.classList.add('is-in'); rio.unobserve(entry.target); }
+  if(!reduceMotion){
+    // Only content that starts below the fold is animated in. Anything already visible is never hidden,
+    // and a scroll/resize/load re-check guarantees nothing is left invisible if the viewport changes.
+    const pending = new Set();
+    const check = ()=>{
+      const limit = window.innerHeight * 0.96;
+      pending.forEach((el)=>{
+        if(el.getBoundingClientRect().top < limit){ el.classList.add('is-in'); pending.delete(el); }
       });
-    }, { rootMargin:'0px 0px -8% 0px', threshold:0.08 });
+      if(!pending.size){
+        window.removeEventListener('scroll', onTick); window.removeEventListener('resize', onTick);
+      }
+    };
+    let queued = false;
+    const onTick = ()=>{ if(queued) return; queued = true; requestAnimationFrame(()=>{ queued = false; check(); }); };
     revealTargets.forEach((el, i)=>{
+      if(el.getBoundingClientRect().top < window.innerHeight * 0.96) return; // already on screen: leave visible
       el.classList.add('reveal');
       el.style.setProperty('--reveal-delay', `${(i % 3) * 70}ms`);
-      rio.observe(el);
+      pending.add(el);
     });
+    window.addEventListener('scroll', onTick, { passive:true });
+    window.addEventListener('resize', onTick, { passive:true });
+    window.addEventListener('load', onTick);
+    setTimeout(check, 400);
   }
 
   // ---------- Gallery (native scroll-snap, buttons + dots enhance it)
@@ -98,8 +112,18 @@
     counter.setAttribute('aria-live', 'polite');
     dotsEl.appendChild(counter);
 
+    // Native lazy-loading is unreliable inside horizontal scrollers, so load the neighbours ourselves
+    const warm = (i)=>{
+      for(let k = Math.max(0, i-1); k <= Math.min(slides.length-1, i+5); k++){
+        const img = slides[k].querySelector('img');
+        if(img && img.loading !== 'eager'){ img.loading = 'eager'; }
+      }
+    };
+    warm(0);
+
     function update(){
       const i = current();
+      warm(i);
       counter.textContent = `${i+1} / ${slides.length}`;
       if(prev) prev.disabled = track.scrollLeft <= 2;
       if(next) next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
