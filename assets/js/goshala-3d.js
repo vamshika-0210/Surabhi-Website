@@ -766,8 +766,9 @@ function start() {
   let lastScrollSeen = -1;
   function scrollSettled() { const ok = lastScrollSeen === scrollP; lastScrollSeen = scrollP; return ok; }
 
+  let started = false;
   function wake() {
-    if (running || !visible || !pageVisible) return;
+    if (!started || running || !visible || !pageVisible) return;
     running = true; lastTime = 0; clock.getDelta();
     raf = requestAnimationFrame(frame);
   }
@@ -780,10 +781,14 @@ function start() {
 
   resize();
   onScroll();
-  wake();
+  // Compile shaders in parallel (KHR_parallel_shader_compile) instead of blocking the first frame,
+  // then start rendering as soon as they are ready.
+  const begin = () => { started = true; wake(); };
+  try {
+    if (renderer.compileAsync) renderer.compileAsync(scene, camera).then(begin, begin); else begin();
+  } catch (_) { begin(); }
   window.__goshala = { rig, camera, scrollP: () => scrollP, tier: tierName, trees: treeSpots.length, cows: herd.length, calls: () => renderer.info.render.calls, tris: () => renderer.info.render.triangles, pr: () => pixelRatio };
 }
 
-// start right after first paint (module scripts already run after the document is parsed)
-const go = () => { try { start(); } catch (err) { console.warn('Goshala 3D failed to start', err); } };
-requestAnimationFrame(() => requestAnimationFrame(go));
+// Module scripts run after the document is parsed, so the canvas already exists: start immediately.
+try { start(); } catch (err) { console.warn('Goshala 3D failed to start', err); }

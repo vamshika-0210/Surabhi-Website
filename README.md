@@ -19,7 +19,8 @@ Structure
 - `contact.html` — Contact details with map embed and visit planning info
 - `assets/css/styles.css` — Global styles
 - `assets/js/main.js` — Navigation, header state, scroll reveals, gallery, 3D tour buttons, forms
-- `assets/js/goshala-3d.js` — The interactive 3D hero (three.js r160, vendored in `assets/vendor/three/`)
+- `assets/js/goshala-3d.js` — Source of the interactive 3D hero (three.js r160, vendored in `assets/vendor/three/`)
+- `assets/js/goshala-3d.bundle.js` — What the site actually loads: the scene + the parts of three.js it uses, minified (~130 KB gzip instead of ~270 KB). **Rebuild after editing `goshala-3d.js`:** `./build.sh` (needs `npm install --no-save esbuild` once)
 - `assets/images/` — Logo, QR code, photos
 
 Customization
